@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>スレッド詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/thread.css}">
+</head>
+<body>
+    <h1 th:text="${thread.title}">スレッドタイトル</h1>
+    <div class="thread-detail">
+        <p>最終更新 : <span th:text="${#temporals.format(thread.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+        <p>投稿者 : <span th:text="${thread.user.nickname}"></span></p>
+        <p class="thread-content" th:text="${thread.description}"></p>
+    </div>
+    
+    <form th:action="@{/admin/bbs/threads/{threadId}/redisplay(threadId=${thread.id})}" method="post" style="display:inline;">
+        <button type="submit" class="btn-danger">再表示</button>
+    </form>
+    <form th:action="@{/admin/bbs/threads/{threadId}/remove(threadId=${thread.id})}" method="post" style="display:inline;">
+        <button type="submit" class="btn-danger">削除</button>
+    </form>
+    
+    <p><a th:href="@{/admin/bbs/threads/all}" class="link">戻る</a></p>
+</body>
+</html>

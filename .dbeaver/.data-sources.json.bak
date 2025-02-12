@@ -1,0 +1,46 @@
+{
+	"folders": {},
+	"connections": {
+		"mysql8-193c89f49ee-44ffc76402638180": {
+			"provider": "mysql",
+			"driver": "mysql8",
+			"name": "localhost",
+			"save-password": true,
+			"show-system-objects": true,
+			"show-util-objects": true,
+			"configuration": {
+				"host": "localhost",
+				"port": "3306",
+				"url": "jdbc:mysql://localhost:3306/",
+				"configurationType": "MANUAL",
+				"home": "C:\\Program Files\\MySQL\\MySQL Server 8.0",
+				"type": "dev",
+				"closeIdleConnection": true,
+				"properties": {
+					"connectTimeout": "20000",
+					"rewriteBatchedStatements": "true",
+					"enabledTLSProtocols": "TLSv1,TLSv1.1,TLSv1.2,TLSv1.3",
+					"allowPublicKeyRetrieval": "TRUE"
+				},
+				"auth-model": "native"
+			}
+		}
+	},
+	"virtual-models": {"mysql8-193c89f49ee-44ffc76402638180":{"reptalicious":{"@properties":{"erd.diagram.state":{"serialized":"\u003cdiagram version\u003d\"1\" name\u003d\"empty\" time\u003d\"202502041837\"\u003e\u003centities\u003e\u003cdata-source id\u003d\"mysql8-193c89f49ee-44ffc76402638180\"\u003e\u003centity id\u003d\"1\" name\u003d\"cart_items\" fq-name\u003d\"reptalicious.cart_items\" order\u003d\"0\" font\u003d\"Segoe UI:9:0\" x\u003d\"475\" y\u003d\"196\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"2\" name\u003d\"categories\" fq-name\u003d\"reptalicious.categories\" order\u003d\"1\" font\u003d\"Segoe UI:9:0\" x\u003d\"740\" y\u003d\"307\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"3\" name\u003d\"comments\" fq-name\u003d\"reptalicious.comments\" order\u003d\"2\" font\u003d\"Segoe UI:9:0\" x\u003d\"635\" y\u003d\"127\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"4\" name\u003d\"favorites\" fq-name\u003d\"reptalicious.favorites\" order\u003d\"3\" font\u003d\"Segoe UI:9:0\" x\u003d\"116\" y\u003d\"366\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"5\" name\u003d\"order_details\" fq-name\u003d\"reptalicious.order_details\" order\u003d\"4\" font\u003d\"Segoe UI:9:0\" x\u003d\"93\" y\u003d\"255\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"6\" name\u003d\"orders\" fq-name\u003d\"reptalicious.orders\" order\u003d\"5\" font\u003d\"Segoe UI:9:0\" x\u003d\"222\" y\u003d\"175\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"7\" name\u003d\"product_category\" fq-name\u003d\"reptalicious.product_category\" order\u003d\"6\" font\u003d\"Segoe UI:9:0\" x\u003d\"490\" y\u003d\"301\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"8\" name\u003d\"products\" fq-name\u003d\"reptalicious.products\" order\u003d\"7\" font\u003d\"Segoe UI:9:0\" x\u003d\"329\" y\u003d\"301\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"9\" name\u003d\"reviews\" fq-name\u003d\"reptalicious.reviews\" order\u003d\"8\" font\u003d\"Segoe UI:9:0\" x\u003d\"73\" y\u003d\"181\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"10\" name\u003d\"threads\" fq-name\u003d\"reptalicious.threads\" order\u003d\"9\" font\u003d\"Segoe UI:9:0\" x\u003d\"558\" y\u003d\"35\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003centity id\u003d\"11\" name\u003d\"users\" fq-name\u003d\"reptalicious.users\" order\u003d\"10\" border-width\u003d\"3\" font\u003d\"Segoe UI:9:0\" x\u003d\"357\" y\u003d\"213\"\u003e\u003cpath name\u003d\"reptalicious\"/\u003e\u003c/entity\u003e\u003c/data-source\u003e\u003c/entities\u003e\u003crelations\u003e\u003crelation name\u003d\"FKdswxvx2nl2032yjv609r29sdr\" fq-name\u003d\"reptalicious.product_category.FKdswxvx2nl2032yjv609r29sdr\" type\u003d\"fk\" pk-ref\u003d\"2\" fk-ref\u003d\"7\"/\u003e\u003crelation name\u003d\"FKa6fy7npl2qi9nu2fo9igepm9k\" fq-name\u003d\"reptalicious.reviews.FKa6fy7npl2qi9nu2fo9igepm9k\" type\u003d\"fk\" pk-ref\u003d\"5\" fk-ref\u003d\"9\"/\u003e\u003crelation name\u003d\"FKjyu2qbqt8gnvno9oe9j2s2ldk\" fq-name\u003d\"reptalicious.order_details.FKjyu2qbqt8gnvno9oe9j2s2ldk\" type\u003d\"fk\" pk-ref\u003d\"6\" fk-ref\u003d\"5\"/\u003e\u003crelation name\u003d\"FK1re40cjegsfvw58xrkdp6bac6\" fq-name\u003d\"reptalicious.cart_items.FK1re40cjegsfvw58xrkdp6bac6\" type\u003d\"fk\" pk-ref\u003d\"8\" fk-ref\u003d\"1\"/\u003e\u003crelation name\u003d\"FK6sgu5npe8ug4o42bf9j71x20c\" fq-name\u003d\"reptalicious.favorites.FK6sgu5npe8ug4o42bf9j71x20c\" type\u003d\"fk\" pk-ref\u003d\"8\" fk-ref\u003d\"4\"/\u003e\u003crelation name\u003d\"FK4q98utpd73imf4yhttm3w0eax\" fq-name\u003d\"reptalicious.order_details.FK4q98utpd73imf4yhttm3w0eax\" type\u003d\"fk\" pk-ref\u003d\"8\" fk-ref\u003d\"5\"/\u003e\u003crelation name\u003d\"FK5w81wp3eyugvi2lii94iao3fm\" fq-name\u003d\"reptalicious.product_category.FK5w81wp3eyugvi2lii94iao3fm\" type\u003d\"fk\" pk-ref\u003d\"8\" fk-ref\u003d\"7\"/\u003e\u003crelation name\u003d\"FKpl51cejpw4gy5swfar8br9ngi\" fq-name\u003d\"reptalicious.reviews.FKpl51cejpw4gy5swfar8br9ngi\" type\u003d\"fk\" pk-ref\u003d\"8\" fk-ref\u003d\"9\"/\u003e\u003crelation name\u003d\"FKowxb1mrw8j0kq7y01c68jc097\" fq-name\u003d\"reptalicious.comments.FKowxb1mrw8j0kq7y01c68jc097\" type\u003d\"fk\" pk-ref\u003d\"10\" fk-ref\u003d\"3\"/\u003e\u003crelation name\u003d\"FK709eickf3kc0dujx3ub9i7btf\" fq-name\u003d\"reptalicious.cart_items.FK709eickf3kc0dujx3ub9i7btf\" type\u003d\"fk\" pk-ref\u003d\"11\" fk-ref\u003d\"1\"/\u003e\u003crelation name\u003d\"FK8omq0tc18jd43bu5tjh6jvraq\" fq-name\u003d\"reptalicious.comments.FK8omq0tc18jd43bu5tjh6jvraq\" type\u003d\"fk\" pk-ref\u003d\"11\" fk-ref\u003d\"3\"/\u003e\u003crelation name\u003d\"FKk7du8b8ewipawnnpg76d55fus\" fq-name\u003d\"reptalicious.favorites.FKk7du8b8ewipawnnpg76d55fus\" type\u003d\"fk\" pk-ref\u003d\"11\" fk-ref\u003d\"4\"/\u003e\u003crelation name\u003d\"FK32ql8ubntj5uh44ph9659tiih\" fq-name\u003d\"reptalicious.orders.FK32ql8ubntj5uh44ph9659tiih\" type\u003d\"fk\" pk-ref\u003d\"11\" fk-ref\u003d\"6\"/\u003e\u003crelation name\u003d\"FKcgy7qjc1r99dp117y9en6lxye\" fq-name\u003d\"reptalicious.reviews.FKcgy7qjc1r99dp117y9en6lxye\" type\u003d\"fk\" pk-ref\u003d\"11\" fk-ref\u003d\"9\"\u003e\u003cbend type\u003d\"abs\" x\u003d\"188\" y\u003d\"139\"/\u003e\u003cbend type\u003d\"abs\" x\u003d\"403\" y\u003d\"139\"/\u003e\u003c/relation\u003e\u003crelation name\u003d\"FKovbl0s79udv66qtffqr234iup\" fq-name\u003d\"reptalicious.threads.FKovbl0s79udv66qtffqr234iup\" type\u003d\"fk\" pk-ref\u003d\"11\" fk-ref\u003d\"10\"/\u003e\u003c/relations\u003e\u003c/diagram\u003e"}}}}},
+	"connection-types": {
+		"dev": {
+			"name": "開発",
+			"color": "255,255,255",
+			"description": "通常の開発データベース",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"smart-commit": false,
+			"smart-commit-recover": true,
+			"auto-close-transactions": true,
+			"close-transactions-period": 1800,
+			"auto-close-connections": true,
+			"close-connections-period": 14400
+		}
+	}
+}

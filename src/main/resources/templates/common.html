@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="meta_header(title,links,scripts)">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title th:text="${title}"></title>
+    <th:block th:replace="${links} ?: _" />
+    <th:block th:replace="${scripts} ?: _" />
+</head>
+
+<body>
+    <header th:fragment="common_header">
+        <nav class="stroke">
+          <ul class="navi-left">
+            <li class="shop-name">Reptalious</li>
+            <li><a th:href="@{/}">トップページ</a></li>
+            <li><a th:href="@{/products}">商品一覧</a></li>
+            <li><a th:href="@{/bbs}">掲示板</a></li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/favorites}">お気に入り</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/cart}">カート</a>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <a th:href="@{/mypage}">マイページ</a>
+            </li>
+        </ul>
+        <ul class="navi-right">
+            <li sec:authorize="isAnonymous()">
+                <form th:action="@{/login}" method="get">
+                    <button type="submit" class="btn btn--login btn--radius">login</button>
+                </form>
+            </li>
+            <li sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="btn btn--logout btn--radius">logout</button>
+                </form>
+            </li>
+          </ul>
+        </nav>
+    </header>
+    
+    <footer th:fragment="common_footer">
+        <div class="left-container">
+            <a class="category-link left-box" th:href="@{/products}">全商品を探す</a>
+        </div>
+        <div class="center-container">
+            <p class="mini-header">カテゴリで探す</p>
+            <div class="categoryList">
+                <div th:each="category : ${categories}" class="grid">
+                    <a class="category-link" th:href="@{/products/category={categoryName}(categoryName=${category.name})}" th:text="${category.name}"></a>
+                </div>
+            </div>
+        </div>
+        <div class="right-container">
+        </div>
+    </footer>
+</body>
+</html>

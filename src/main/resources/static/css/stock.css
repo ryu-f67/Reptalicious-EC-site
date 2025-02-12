@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+.stock-detail{
+    position: relative;
+    left: 64px;
+}
+
+.stock-detail p{
+    font-size: 1.8rem;
+}
+.stock-detail label{
+    font-size: 1.8rem;
+}
+.stock-detail input{
+    font-size: 1.8rem;
+}
+
+.stock-form {
+    width: 70px;
+}
+
+.btn-position{
+    padding-top: 20px;
+}
+
+.btn-submit{
+    padding: 5px 20px;
+}

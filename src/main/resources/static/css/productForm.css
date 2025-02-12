@@ -1,0 +1,132 @@
+@charset "UTF-8";
+
+.Form-container {
+    position: relative;
+    left: 64px;
+    width: 1080px;
+    margin-bottom: 30px;
+    background-color: rgb(245, 245, 245);
+}
+.label-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.error-message{
+    font-size: 1.2rem;
+    position: relative;
+    margin-left: 30px;
+}
+
+.Form-Item {
+  border-bottom: 1px solid #ddd;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.Form-Item-Label {
+  margin-left: 30px;
+  width: 180px;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+}
+.Form-Item-Label-Required {
+  vertical-align: middle;
+  border-radius: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-left: 10px;
+  width: 30px;
+  display: inline-block;
+  text-align: center;
+  background: rgb(255, 0, 0);
+  color: #fff;
+  font-size: 0.8rem;
+}
+.Form-Item-Label-Any {
+  vertical-align: middle;
+  border-radius: 6px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  margin-left: 10px;
+  width: 30px;
+  display: inline-block;
+  text-align: center;
+  background: rgb(128, 128, 128);
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.Form-Item-Input {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-left: 40px;
+  padding: 0.5rem 1.2rem;
+  height: 36px;
+  width: 775px;
+  background: rgb(255, 255, 255);
+  font-size: 1.4rem;
+}
+.Form-Item-Select {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-left: 40px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 0.5rem 1.2rem;
+  height: 36px;
+  width: 785px;
+  background: rgb(255, 255, 255);
+  font-size: 1.4rem;
+}
+.Form-Item-Textarea {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-left: 40px;
+  padding: 0.5rem 1.2rem;
+  height: 200px;
+  width: 785px;
+  background: rgb(255, 255, 255);
+  font-size: 1.4rem;
+  resize: none;
+  overflow-y: scroll;
+}
+
+input[type="file"] {
+    margin-left: 40px;
+}
+
+.select-container{
+    width: 600px;
+}
+
+.Button-Item {
+  padding-top: 36px;
+  padding-bottom: 36px;
+  width: 100%;
+  justify-content: center;
+  display: flex
+  ;
+}
+
+button.btn-submit{
+    border-radius: 5px;
+    font-size: 1.8rem;
+    padding: 12px 60px;
+    background-color: rgb(230, 230, 230);
+}
+button.btn-submit:hover {
+  background: rgb(245, 245, 245);
+}
+
+.Spacer {
+    height: 10px;
+    background: none;
+}

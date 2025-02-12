@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+.form-wrapper {
+    position: relative;
+    background: rgb(245, 245, 245);
+    margin: 3em auto;
+    padding: 0 1em;
+    width: 650px;
+    height: 550px;
+}
+
+.title{
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.form-title {
+    position: relative;
+    left: 15%;
+    margin-bottom: 0.5rem;
+    width: 70%;
+}
+
+.form-content {
+    position: relative;
+    left: 15%;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    width: 70%;
+}
+
+.Form-Title-Input {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  height: 36px;
+  flex: 1;
+  width: 100%;
+  max-width: 420px;
+  background: rgb(255, 255, 255);
+  font-size: 18px;
+}
+
+.Form-Content-Input {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1.2rem;
+  padding-right: 1.2rem;
+  height: 25rem;
+  flex: 1;
+  width: 100%;
+  max-width: 420px;
+  background: rgb(255, 255, 255);
+  font-size: 18px;
+  resize: none;
+  overflow-y: scroll;
+}
+
+.Form-Item-Label {
+  margin-bottom: 8px;
+  padding-left: 10px;
+  letter-spacing: 0.05em;
+  font-weight: bold;
+  font-size: 1.6rem;
+}
+
+.login-form {
+    position: relative;
+    font-size: 1.4rem;
+    border-bottom: 2px solid rgb(235, 235, 235);
+}
+.Button-Item {
+  position: relative;
+  left: 15%;
+  margin: 2em 0 0;
+  width: 70%;
+  padding-bottom: 25px;
+}
+
+.Button-Item .btn-submit {
+  background:  rgb(0, 164, 0);
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  height: 50px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.2em;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.3s ease-in-out;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.btn-submit:hover {
+  background: rgb(0, 184, 0);
+}
+

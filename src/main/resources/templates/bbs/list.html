@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('掲示板一覧',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/bbs.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <div class="bbs-title">
+            <h1>掲示板一覧</h1>
+            <form class="btn-thread" th:action="@{/bbs/thread/new}" method="get">
+                <button type="submit" class="btn-danger">スレッド作成</button>
+            </form>
+        </div>
+        
+        <div th:if="${threads.isEmpty()}">
+            <p class="noItem">掲示板はありません。</p>
+        </div>
+        
+        <div th:unless="${threads.isEmpty()}">
+            <div class="bbs-container">
+                <ul>
+                    <li class="thread-list" th:each="thread : ${threads}">
+                        <a class="thread-link" th:href="@{/bbs/{id}(id=${thread.id})}" th:text="${thread.title}">タイトル</a>
+                        <p class="thread-user">投稿者 : <span th:text="${thread.user.nickname}"></span></p>
+                        <div th:if="${thread.user == user}">
+                            <form class="btn-edit" th:action="@{/bbs/{id}/edit(id=${thread.id})}" method="get">
+                                <button type="submit" class="btn-danger">編集</button>
+                            </form> 
+                        </div>
+                        <div th:if="${thread.user == user}">
+                            <form class="btn-remove" th:action="@{/bbs/{id}/remove(id=${thread.id})}" method="post">
+                                <button type="submit" onclick="return confirm('本当に削除しますか？');" class="btn-danger">削除</button>
+                            </form> 
+                        </div>
+                        <form class="btn-report" th:action="@{/bbs/reportThread}" method="post">
+                            <input type="hidden" name="threadId" th:value="${thread.id}">
+                            <button onclick="return confirm('本当に通報しますか？');" class="btn-danger">通報</button>
+                        </form>
+                        <p class="thread-content" th:text="${thread.description}">内容</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <p><a th:href="@{/}" class="link">トップページ</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

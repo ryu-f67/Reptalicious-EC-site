@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}">商品詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/productDetail.css}">
+    <link rel="stylesheet" th:href="@{/css/productManage.css}">
+</head>
+<body>
+    <main>
+        <div class="head">
+            <p class="productId">商品ID : <span th:text="${product.id}"></span></p>
+            <div class="category-box">
+                <p>カテゴリ : </p>
+                <p class="category-text" th:each="productCategory : ${productCategories}" th:text="${productCategory.category.name}"></p>
+            </div>
+            <div class="btn-box">
+                <form th:action="@{/admin/products/{id}/edit(id=${product.id})}" method="get">
+                    <button type="submit">編集</button>
+                </form>
+                <form th:action="@{/admin/products/{id}/delete(id=${product.id})}" method="post">
+                    <button type="submit">削除</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="image-container">
+            <div class="btnWrapper">
+                <img class="img-btn show" id="image1" th:src="${product.imageUrl1 != null ? product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像1" width="150"/>
+                <img class="img-btn" id="image2" th:src="${product.imageUrl2 != null ? product.imageUrl2 : '/images/noimage.jpg'}" alt="商品画像2" width="150"/>
+                <img class="img-btn" id="image3" th:src="${product.imageUrl3 != null ? product.imageUrl3 : '/images/noimage.jpg'}" alt="商品画像3" width="150"/>
+            </div>
+            <div class="img-box">
+                <img class="img" id="image-main" th:src="${product.imageUrl1 != null ? product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像1" width="450"/>
+            </div>
+            
+            <div class="operate-container">
+                <p class="product-name" th:text="${product.name}"></p>
+                <div class="evaluation-ave" style="position: relative;">
+                    <div class="stars-empty">
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                    </div>
+                    <a href="#" class="review-link">レビューを見る</a>
+                </div>
+                <p class="price"><strong>価格:</strong> <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></span> 円</p>
+                    <button type="submit" class="btn-product btn-success">カートに追加する</button>
+        
+                    <button type="submit" class="btn-product btn-favorite">お気に入りに追加                        </button>
+                </div>
+            </div>
+        
+        <div class="description-container">
+            <p class="description"><strong>商品説明</strong></p>
+            <p class="description" th:text="${product.description}"></p>
+        </div>
+    </main>
+    
+    <p><a th:href="@{/admin/products}" class="link">商品管理へ戻る</a></p>
+    
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

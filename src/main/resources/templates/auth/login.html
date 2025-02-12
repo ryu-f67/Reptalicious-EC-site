@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('ログイン',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="form-wrapper">
+        <div class="login-msg">
+            <p class="login">ログイン</p>
+            <div th:if="${param.error}">
+                <p class="red">ログインに失敗しました。再度お試しください。</p>
+            </div>
+            <div th:if="${param.logout}">
+                <p class="success">ログアウトしました。</p>
+            </div>
+        </div>
+        <form th:action="@{/auth/login}" method="post" class="login-form">
+            <div class="form-item">
+                <input type="email" name="username" placeholder="Email Address" required />
+            </div>
+            <div class="form-item">
+                <input type="password" name="password" id="password" placeholder="Password" required />
+                <div class="toggle-password">
+                    <input type="checkbox" id="togglePassword">
+                    <label for="togglePassword">パスワードを表示</label>
+                </div>
+            </div>
+            <div class="button-panel">
+                <input type="submit" class="button" title="ログイン" value="ログイン"></input>
+            </div>
+        </form>
+        <div class="form-footer">
+            <p>初めての方はこちら</p>
+            <p><a th:href="@{/auth/register}">新規登録</a></p>
+        </div>
+    </div>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script src="/js/togglePassword.js"></script>
+</body>
+</html>

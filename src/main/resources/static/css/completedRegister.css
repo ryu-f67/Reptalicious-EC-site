@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+.complete-container {
+    position: relative;
+    background: rgb(245, 245, 245);
+    margin: 3em auto;
+    padding: 0 1em;
+    width: 650px;
+    height: 350px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.complete-container p {
+    font-size: 1.8rem;
+}
+
+.complete-container p a{
+    font-size: 1.4rem;
+}

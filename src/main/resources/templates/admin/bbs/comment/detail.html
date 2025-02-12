@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>コメント詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/thread.css}">
+</head>
+<body>
+    <h1 th:text="${comment.thread.title}">スレッドタイトル</h1>
+    <div class="thread-detail">
+        <p>最終更新 : <span th:text="${#temporals.format(comment.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+        <p>投稿者 : <span th:text="${comment.user.nickname}"></span></p>
+        <p class="thread-content" th:text="${comment.description}"></p>
+    </div>
+    <form th:action="@{/admin/bbs/threads/{threadId}/comments/{commentId}/redisplay(threadId=${comment.thread.id}, commentId=${comment.id})}" method="post" style="display:inline;">
+        <button type="submit" class="btn-danger">再表示</button>
+    </form>
+    <form th:action="@{/admin/bbs/threads/{threadId}/comments/{commentId}/remove(threadId=${comment.thread.id}, commentId=${comment.id})}" method="post" style="display:inline;">
+        <button type="submit" class="btn-danger">削除</button>
+    </form>
+    
+    <p><a th:href="@{/admin/bbs/threads/{threadId}/comments/all(threadId=${comment.thread.id})}" class="link">戻る</a></p>
+</body>
+</html>

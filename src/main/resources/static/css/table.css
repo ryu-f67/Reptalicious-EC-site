@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+table {
+  border-collapse: collapse;
+  font-size: 1.6rem;
+  position: relative;
+  left: 64px;
+}
+ th {
+  background: #ccc;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background: #efefef;
+}
+
+.management-table{
+    position: relative;
+    left: 64px;
+}

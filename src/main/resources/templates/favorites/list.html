@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head  th:replace="common :: meta_header('お気に入り一覧',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/favorite.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <h1>お気に入り一覧</h1>
+        
+        <div th:if="${favorites.isEmpty()}">
+            <p class="red noItem">お気に入りに登録された商品はありません。</p>
+        </div>
+        
+        <div th:unless="${favorites.isEmpty()}">
+            <div class="favorite-container">
+                <div class="item-container">
+                    <ul class="grid">
+                        <li class="favorite-list" th:each="favorite : ${favorites}">
+                            <a th:href="@{/products/{id}(id=${favorite.product.id})}">
+                                <img th:src="${favorite.product.imageUrl1 != null ? favorite.product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像"/>
+                            </a>
+                            <div class="favoriteTxt">
+                                <a class="itemTitle" th:href="@{/products/{id}(id=${favorite.product.id})}" th:text="${favorite.product.name}"></a>
+                                <form th:action="@{/favorites/remove/{id}(id=${favorite.id})}" method="post">
+                                    <button type="submit" class="favorite-remove">お気に入りから削除</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

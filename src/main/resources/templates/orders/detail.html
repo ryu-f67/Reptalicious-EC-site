@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('注文詳細',~{::link},~{::script})">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/order.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <h1>注文詳細 - 注文ID: <span th:text="${order.id}"></span></h1>
+        <div class="order-detail">
+            <p><strong>注文日 : </strong> <span th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+            <p><strong>注文番号 : </strong> <span th:text="${order.orderNumber}"></span></p>
+            <p><strong>送料 : </strong> <span th:text="${#numbers.formatInteger(order.shippingFee, 0, 'COMMA')}"></span> 円</p>
+            <p><strong>合計金額 : </strong> <span th:text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA')}"></span> 円</p>
+        </div>
+        
+        <div class="Item-container">
+            <ul>
+                <li class="purchaseItem-list" th:each="detail : ${order.orderDetails}">
+                    <img th:src="${detail.product.imageUrl1 != null ? detail.product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像" width="150"/>
+                    <div class="text-container">
+                        <p class="purchaseItem-name" th:text="${detail.product.name}"></p>
+                        <p class="purchaseItem-price">単価 : <span th:text="${#numbers.formatInteger(detail.price, 0, 'COMMA')}"></span> 円</p>
+                        <p class="purchaseItem-quantity">数量 : <span th:text="${detail.quantity}"></span></p>
+                        <p class="purchaseItem-totalPrice">価格 : <span th:text="${#numbers.formatInteger(detail.price*detail.quantity, 0, 'COMMA')}"></span> 円</p>
+                    </div>
+                    <div class="btn-container">
+                        <form th:action="@{/products/{id}(id=${detail.product.id})}" method="get">
+                            <button type="submit" class="btn-submit">もう一度購入</button>
+                        </form>
+                        <form th:action="@{/reviews/{id}/new(id=${detail.product.id})}" method="get">
+                            <input type="hidden" name="detailId" th:value="${detail.id}" />
+                            <button type="submit"  class="btn-submit">レビューを書く</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <p><a th:href="@{/orders}" class="link">注文履歴一覧へ戻る</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script th:src="@{/js/main.js}"></script>
+    
+</body>
+</html>

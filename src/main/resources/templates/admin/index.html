@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('管理者ページ',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/managePage.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <h1>管理者ページ</h1>
+        <p class="menu"><a th:href="@{/admin/users}">会員管理</a></p>
+        <p class="menu"><a th:href="@{/admin/orders}">注文管理</a></p>
+        <p class="menu"><a th:href="@{/admin/products}">商品管理</a></p>
+        <p class="menu"><a th:href="@{/admin/categories}">カテゴリ管理</a></p>
+        <p class="menu"><a th:href="@{/admin/stocks}">在庫管理</a></p>
+        <p class="menu"><a th:href="@{/admin/bbs/threads/all}">掲示板管理</a></p>
+        <p class="menu"><a th:href="@{/}">トップページ</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif+JP');
+
+html { 
+  font-size: 62.5%; 
+}
+
+body{
+    width: 1280px;
+    margin: 0 8px;
+    display: flexbox;
+    flex-direction: column;
+}
+
+header{
+    position: relative;
+    top: 0;
+    width: 100%;
+    height: 150px;
+    padding: 0;
+}
+
+main{
+    position: relative;
+    top: 20px;
+    left: 64px;
+    width: 1088px;
+    min-height: 400px;
+}
+
+nav {
+  position: absolute;
+  font-size: 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  left: 16px;
+  width: 1216px;
+  margin: 0 auto;
+  background: rgb(235, 235, 235);
+  box-shadow: 0px 5px 0px #dedede;
+}
+
+nav ul {
+  list-style: none;
+  text-align: center;
+}
+nav ul li {
+  display: inline-block;
+}
+nav ul li a {
+  display: block;
+  padding: 5px 20px;
+  text-decoration: none;
+  color: #aaa;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin: 0 5px;
+}
+nav ul li a,
+nav ul li a:after,
+nav ul li a:before {
+  transition: all .5s;
+}
+nav ul li a:hover {
+  color: #555;
+}
+
+nav.stroke ul li a {
+    position: relative;
+}
+
+nav.stroke ul li a:after {
+    position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 0%;
+      content: '.';
+      color: transparent;
+      background: #333;
+      height: 1px;
+}
+
+nav.stroke ul li a:hover:after {
+  width: 100%;
+}
+
+nav ul.nav-left, 
+nav ul.nav-right {
+  display: flex;
+  gap: 20px;
+}
+
+button.btn {
+  font-size: 1.6rem;
+  font-weight: bold;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 3rem;
+  margin: 0 24px 0 0;
+  cursor: pointer;
+  transition: 0.3s;
+  align-items: center;
+  text-align: center;
+}
+
+button.btn--login{
+    color: #fff;
+    background-color: rgb(0, 164, 0);
+}
+
+button.btn--logout{
+    color: #fff;
+    background-color: rgb(128, 128, 128);
+}
+
+button.btn--login:hover {
+  color: #fff;
+  background:  rgb(0, 184, 0);
+}
+
+button.btn--logout:hover {
+  color: #fff;
+  background: rgb(192, 192, 192);
+}
+
+button.btn--radius {
+   border-radius: 100vh;
+}
+
+.shop-name {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-size: 4rem;
+    margin: 15px 20px 5px 5px;
+    position: relative;
+}
+
+.news-banner {
+    position: absolute;
+    display: block;
+    left: 24px;
+    top: 120px;
+    height: 30px;
+    width: 1216px;
+    background-color: orange;
+    overflow: hidden;
+}
+
+.news-banner__content {
+    display: inline-block;
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 5px;
+    padding-left: 100%;
+    white-space: nowrap;
+    animation: animate-banner 20s linear infinite;
+}
+
+.news-banner__content > * {
+  display: inline-block;
+}
+
+@keyframes animate-banner {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+footer{
+    position: relative;
+    left: 16px;
+    top: 50px;
+    width: 1216px;
+    min-height: 200px;
+    padding: 0;
+    display: flex;
+    font-size: 1.2rem; 
+    background-color: rgb(235, 235, 235);
+}
+
+.left-container{
+    position: relative;
+    width: 30%;
+}
+
+.center-container{
+    position: relative;
+    width: 40%;
+}
+    
+.right-container{
+    position: relative;
+    width: 30%;
+}
+
+.mini-header {
+    position: relative;
+    left: 16px;
+    font-size: 1.4rem;
+}
+
+.categoryList{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 20px;
+    row-gap: 10px;
+    list-style: none;
+    width: 100%;
+}
+.category-link{
+    margin-left: 15px;
+}
+.left-box{
+    position: relative;
+    top: 16px;
+    left: 20px;
+    font-size: 1.4rem;
+}
+
+.link{
+    position: relative;
+    left: 64px;
+    font-size: 1.4rem;
+}
+
+h1{
+    position: relative;
+    left: 64px;
+}
+h2{
+    position: relative;
+    left: 64px;
+}
+.error, .red {
+    color: #ff0000;
+}
+
+.error{
+    position: relative;
+    left: 64px;
+    font-size: 1.8rem;
+}
+
+.success {
+    color: #00aa00;
+}
+
+.noItem {
+    position: relative;
+    left: 64px;
+    font-size: 2.0rem;
+}

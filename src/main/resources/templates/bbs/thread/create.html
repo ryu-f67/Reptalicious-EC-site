@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('スレッド作成',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/threadForm.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="form-wrapper">
+        <p class="title">スレッド作成</p>
+        <form th:action="@{/bbs/thread/new}" th:object="${thread}" method="post">
+            <div class="form-title">
+                <p class="Form-Item-Label">タイトル</p>
+                <input class="Form-Title-Input" type="text" th:field="*{title}" required />
+            </div>
+            <div class="form-content">
+                <p class="Form-Item-Label">内容</p>
+                <textarea class="Form-Content-Input" th:field="*{description}" required ></textarea>
+            </div>
+            <div class="Button-Item">
+                <button type="submit" class="btn-submit">作成</button>
+            </div>
+        </form>
+    </div>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

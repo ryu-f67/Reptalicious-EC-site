@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('レビュー一覧',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/review.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <h1>レビュー一覧</h1>
+        <div class="product-container">
+            <div class="img-container">
+                <img th:src="${product.imageUrl1 != null ? product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像"/>
+            </div>
+            <div class="text-conatiner">
+                <p th:text="${product.name}"></p>
+                <div class="evaluation-ave" style="position: relative;">
+                    <div class="stars-full" th:style="'width: ' + (${averageRating} / 5 * 100) + '%;'">
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                    </div>
+                    <div class="stars-empty">
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                        <label>★</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div th:if="${reviews.isEmpty()}">
+            <p class="noItem">レビューはありません。</p>
+        </div>
+        
+        <div th:unless="${reviews.isEmpty()}">
+            <div class="review-container">
+                <ul>
+                    <li class="review-list" th:each="review : ${reviews}">
+                        <div class="evaluation" style="position: relative;">
+                            <div class="stars-full" th:style="'width: ' + (${review.rating} / 5 * 100) + '%;'">
+                                <label>★</label>
+                                <label>★</label>
+                                <label>★</label>
+                                <label>★</label>
+                                <label>★</label>
+                            </div>
+                            <div class="stars-empty">
+                                <label>★</label>
+                                <label>★</label>
+                                <label>★</label>
+                                <label>★</label>
+                                <label>★</label>
+                            </div>
+                        </div>
+                        <p th:text="${review.description}"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <p><a th:href="@{/products/{id}(id=${product.id})}" class="link">商品へ戻る</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>
