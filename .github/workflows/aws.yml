@@ -36,7 +36,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ env.AWS_REGION }}
+        aws-region: ${{ secrets.AWS_REGION }}
 
     - name: Set up JDK 21
       uses: actions/setup-java@v3
@@ -60,14 +60,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build --build-arg DB_URL=${DB_URL} \
-                     --build-arg DB_USERNAME=${DB_USERNAME} \
-                     --build-arg DB_PASSWORD=${DB_PASSWORD} \
-                     --build-arg AWS_REGION=${AWS_REGION} \
-                     --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} \
-                     --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
-                     --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
-                     -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
