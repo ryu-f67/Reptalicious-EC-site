@@ -18,6 +18,6 @@ public class AdminController {
     @GetMapping
     public String showAdminPage(Model model) {
         model.addAttribute("categories", categoryService.getActiveCategory());
-        return "/admin/index";
+        return "admin/index";
     }
 }
