@@ -1,5 +1,6 @@
 package com.example.security;
 
+import com.example.entity.LogicalDeleteStatus;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -49,6 +50,10 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled(){
-        return true;
+        if (user.getLogicalDeleteStatus() == LogicalDeleteStatus.ACTIVE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
