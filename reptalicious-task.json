@@ -43,7 +43,7 @@
       }
     ],
     "family": "ReptaliciousTaskDefinition",
-    "taskRoleArn": "arn:aws:iam::767397683125:role/ecs-reptalicious-task-role",
+    "taskRoleArn": "arn:aws:iam::767397683125:role/reptalicious-S3FullAccess-role",
     "executionRoleArn": "arn:aws:iam::767397683125:role/reptalicious-task",
     "networkMode": "awsvpc",
     "requiresCompatibilities": [
