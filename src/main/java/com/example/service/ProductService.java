@@ -120,16 +120,6 @@ public class ProductService {
             } else {
                 product.setImageUrl3(null);
             }
-
-//            if (product.getImageUrl1() != null && product.getImageUrl1().isEmpty()) {
-//                product.setImageUrl1(null);
-//            }
-//            if (product.getImageUrl2() != null && product.getImageUrl2().isEmpty()) {
-//                product.setImageUrl2(null);
-//            }
-//            if (product.getImageUrl3() != null && product.getImageUrl3().isEmpty()) {
-//                product.setImageUrl3(null);
-//            }
         } catch (Exception e) {
             throw new RuntimeException("画像のアップロードに失敗しました", e);
         }
