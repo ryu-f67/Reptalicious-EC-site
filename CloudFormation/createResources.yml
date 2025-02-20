@@ -166,6 +166,23 @@ Resources:
         - Key: Name
           Value: !Sub ${Namebase}-bucket
 
+  # S3 バケットポリシー
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - s3:GetObject
+            Sid: BucketPolicy
+            Effect: Allow
+            Resource:
+              - !Sub 'arn:aws:s3:::${S3Bucket}/*'
+            Principal: '*'
+    DependsOn: S3Bucket
+
   # IAM Role 作成
   S3accessIAMRole:
     Type: AWS::IAM::Role
