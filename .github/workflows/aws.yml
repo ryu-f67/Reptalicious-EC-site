@@ -3,6 +3,8 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches: [ "dev" ]
+  paths-ignore:
+      - "CloudFormation/**"
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
