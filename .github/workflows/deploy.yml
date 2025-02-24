@@ -52,14 +52,11 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
-    - name: Download RDS Endpoint artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: rds-endpoint
-
-    - name: Load RDS Endpoint into environment
+    - name: Load RDS Endpoint
       run: |
-        RDS_ENDPOINT=$(cat rds_endpoint.txt)
+        RDS_ENDPOINT=$(aws rds describe-db-instances \
+            --query "DBInstances[?DBInstanceIdentifier=='reptaliciousdb'].Endpoint.Address" \
+            --output text)
         echo "RDS_ENDPOINT=${RDS_ENDPOINT}" >> $GITHUB_ENV
 
     - name: Build, tag, and push image to Amazon ECR
