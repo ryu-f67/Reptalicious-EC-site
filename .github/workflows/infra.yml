@@ -1,0 +1,104 @@
+name: Create Infrastructure
+
+on:
+  push:
+    branches: [ "dev" ]
+    paths:
+      - "CloudFormation/**"
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  ECR_REPOSITORY: reptalicious
+  ECS_SERVICE: reptalicious-service
+  ECS_CLUSTER: reptalicious-cluster
+  ECS_TASK_DEFINITION: reptalicious-task.json
+  CONTAINER_NAME: reptalicious-container
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-infra:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Deploy CloudFormation Stack 1
+      run: |
+        aws cloudformation deploy \
+          --template-file CloudFormation/createVPC.yml \
+          --stack-name reptalicious-vpc-stack \
+          --capabilities CAPABILITY_NAMED_IAM
+        
+        aws cloudformation deploy \
+          --template-file CloudFormation/createSG.yml \
+          --stack-name reptalicious-sg-stack \
+          --capabilities CAPABILITY_NAMED_IAM
+        
+        aws cloudformation deploy \
+          --template-file CloudFormation/createResources.yml \
+          --stack-name reptalicious-resources-stack \
+          --parameter-overrides RDSUsername=${{ secrets.DB_USERNAME }} RDSpassword=${{ secrets.DB_PASSWORD }} \
+          --capabilities CAPABILITY_NAMED_IAM
+        
+        RDS_ENDPOINT=$(aws rds describe-db-instances \
+            --query "DBInstances[?DBInstanceIdentifier=='reptaliciousdb'].Endpoint.Address" \
+            --output text)
+        echo "RDS_ENDPOINT=${RDS_ENDPOINT}" >> $GITHUB_ENV
+        echo "${RDS_ENDPOINT}" > rds_endpoint.txt
+
+    - name: Save RDS Endpoint as an artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: rds-endpoint
+        path: rds_endpoint.txt
+
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build --build-arg DB_URL= ${{ env.RDS_ENDPOINT }}\
+                     --build-arg DB_USERNAME=${{ secrets.DB_USERNAME }} \
+                     --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+                     --build-arg AWS_REGION=${{ secrets.AWS_REGION }} \
+                     --build-arg AWS_S3_BUCKET=${{ secrets.AWS_S3_BUCKET }} \
+                     --build-arg AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
+                     --build-arg AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
+                     -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+    - name: Deploy CloudFormation Stack 2
+      run: |
+        aws cloudformation deploy \
+          --template-file CloudFormation/createECS.yml \
+          --stack-name reptalicious-ecs-stack \
+          --capabilities CAPABILITY_NAMED_IAM
