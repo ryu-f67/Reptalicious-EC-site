@@ -28,7 +28,9 @@ Metadata:
       RDSpassword:
         default: RDS password
       ALBname:
-        default: ALB Name
+        default: ALB name
+      S3bucketname:
+        default: S3 bucket name
 
 Parameters:
   Namebase:
@@ -47,6 +49,10 @@ Parameters:
   ALBname:
     Type: String
     Default: reptalicious-alb
+
+  S3bucketname:
+    Type: String
+    Default: reptalicious-bucket
 
 Resources:
   # RDS作成
@@ -143,7 +149,7 @@ Resources:
   S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Sub ${Namebase}-bucket
+      BucketName: !Ref S3bucketname
       PublicAccessBlockConfiguration:
         BlockPublicAcls: false
         BlockPublicPolicy: false

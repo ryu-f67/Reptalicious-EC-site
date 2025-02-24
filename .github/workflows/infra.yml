@@ -54,14 +54,13 @@ jobs:
         aws cloudformation deploy \
           --template-file CloudFormation/createResources.yml \
           --stack-name reptalicious-resources-stack \
-          --parameter-overrides RDSUsername=${{ secrets.DB_USERNAME }} RDSpassword=${{ secrets.DB_PASSWORD }} \
+          --parameter-overrides RDSUsername=${{ secrets.DB_USERNAME }} RDSpassword=${{ secrets.DB_PASSWORD }} S3bucketname=${{ secrets.AWS_S3_BUCKET }} \
           --capabilities CAPABILITY_NAMED_IAM
         
         RDS_ENDPOINT=$(aws rds describe-db-instances \
             --query "DBInstances[?DBInstanceIdentifier=='reptaliciousdb'].Endpoint.Address" \
             --output text)
-        echo "RDS_ENDPOINT=${RDS_ENDPOINT}" >> $GITHUB_ENV
-        echo "${RDS_ENDPOINT}" > rds_endpoint.txt
+        echo "RDS_URL=${RDS_ENDPOINT}" >> $GITHUB_ENV
 
     - name: Save RDS Endpoint as an artifact
       uses: actions/upload-artifact@v4
@@ -91,7 +90,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build --build-arg DB_URL=${{ env.RDS_ENDPOINT }} \
+        docker build --build-arg DB_URL=${{ env.RDS_URL }} \
                      --build-arg DB_USERNAME=${DB_USERNAME} \
                      --build-arg DB_PASSWORD=${DB_PASSWORD} \
                      --build-arg AWS_REGION=${AWS_REGION} \
