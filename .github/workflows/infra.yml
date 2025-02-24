@@ -3,8 +3,8 @@ name: Create Infrastructure
 on:
   push:
     branches: [ "dev" ]
-    paths:
-      - "CloudFormation/**"
+#    paths:
+#      - "CloudFormation/**"
 
 env:
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
