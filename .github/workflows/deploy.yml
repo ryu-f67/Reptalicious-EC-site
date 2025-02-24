@@ -3,13 +3,12 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches: [ "dev" ]
-    paths:
-      - "src/**"
+#    paths:
+#      - "src/**"
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-  DB_URL: ${{ secrets.DB_URL }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   ECR_REPOSITORY: reptalicious
@@ -53,6 +52,16 @@ jobs:
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
 
+    - name: Download RDS Endpoint artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: rds-endpoint
+
+    - name: Load RDS Endpoint into environment
+      run: |
+        RDS_ENDPOINT=$(cat rds_endpoint.txt)
+        echo "RDS_ENDPOINT=${RDS_ENDPOINT}" >> $GITHUB_ENV
+
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
@@ -62,7 +71,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build --build-arg DB_URL=${DB_URL} \
+        docker build --build-arg DB_URL=${{ env.RDS_ENDPOINT }} \
                      --build-arg DB_USERNAME=${DB_USERNAME} \
                      --build-arg DB_PASSWORD=${DB_PASSWORD} \
                      --build-arg AWS_REGION=${AWS_REGION} \
