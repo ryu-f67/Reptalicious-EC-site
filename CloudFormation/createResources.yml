@@ -241,3 +241,8 @@ Outputs:
     Value: !Ref S3accessIAMRole
     Export:
       Name: S3accessIAMRole
+
+  ALBDNSName:
+    Value: !GetAtt ALB.DNSName
+    Export:
+      Name: ALBDNSName

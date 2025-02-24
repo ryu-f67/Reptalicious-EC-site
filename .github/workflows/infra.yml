@@ -108,3 +108,16 @@ jobs:
           --stack-name reptalicious-ecs-stack \
           --parameter-overrides Image=${{ steps.build-image.outputs.image }} \
           --capabilities CAPABILITY_NAMED_IAM
+
+    - name: Get ALB DNS Name
+      run: |
+        ALB_DNS=$(aws cloudformation describe-stacks \
+          --stack-name reptalicious-resources-stack \
+          --query "Stacks[0].Outputs[?OutputKey=='ALBDNSName'].OutputValue" \
+          --output text)
+        echo "ALB_DNS=${ALB_DNS}" >> $GITHUB_ENV
+
+    - name: access ALB
+      run: |
+        echo "Accessing ALB at http://${ALB_DNS}:80"
+        curl -I http://${ALB_DNS}:80
