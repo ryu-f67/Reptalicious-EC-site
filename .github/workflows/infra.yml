@@ -7,18 +7,12 @@ on:
       - "CloudFormation/**"
 
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-  DB_URL: ${{ secrets.DB_URL }}
-  DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   ECR_REPOSITORY: reptalicious
   ECS_SERVICE: reptalicious-service
   ECS_CLUSTER: reptalicious-cluster
   ECS_TASK_DEFINITION: reptalicious-task.json
   CONTAINER_NAME: reptalicious-container
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 permissions:
   contents: read
