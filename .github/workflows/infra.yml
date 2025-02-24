@@ -3,8 +3,8 @@ name: Create Infrastructure
 on:
   push:
     branches: [ "dev" ]
-#    paths:
-#      - "CloudFormation/**"
+    paths:
+      - "CloudFormation/**"
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
