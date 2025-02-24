@@ -9,23 +9,11 @@ Metadata:
           default: Name base
         Parameters:
           - Namebase
-      - Label:
-          default: Security Group Config
-        Parameters:
-          - MyIp
-    ParameterLabels:
-      MyIp:
-        default: your IP address
 
 Parameters:
   Namebase:
     Type: String
     Default: reptalicious
-
-  MyIp:
-    Description: enter your IP address
-    Type: String
-    Default: ''
 
 Resources:
   # ECS用セキュリティグループ作成
@@ -38,10 +26,6 @@ Resources:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
       SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: 22
-          ToPort: 22
-          CidrIp: !Sub ${MyIp}/32
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80

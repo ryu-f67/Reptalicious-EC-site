@@ -12,7 +12,6 @@ Metadata:
       - Label:
           default: RDS Config
         Parameters:
-          - DBid
           - RDSUsername
           - RDSpassword
       - Label:
@@ -24,25 +23,17 @@ Metadata:
         Parameters:
           - S3bucketname
     ParameterLabels:
-      DBid:
-        default: DataBase ID
       RDSUsername:
         default: RDS username
       RDSpassword:
         default: RDS password
       ALBname:
         default: ALB Name
-      S3bucketname:
-        default: S3bucket Name
 
 Parameters:
   Namebase:
     Type: String
     Default: reptalicious
-
-  DBid:
-    Type: String
-    Default: reptaliciousdb
 
   RDSUsername:
     Type: String
@@ -56,10 +47,6 @@ Parameters:
   ALBname:
     Type: String
     Default: reptalicious-alb
-
-  S3bucketname:
-    Type: String
-    Default: reptalicious-s3-bucket
 
 Resources:
   # RDS作成
@@ -83,7 +70,7 @@ Resources:
       AvailabilityZone: !Select [0, !GetAZs ""]
       BackupRetentionPeriod: 0
       DBInstanceClass: db.t3.micro
-      DBInstanceIdentifier: !Ref DBid
+      DBInstanceIdentifier: reptaliciousdb
       DBName: reptalicious
       DBSubnetGroupName: !Ref rdsDBSubnetGroup
       Engine: mysql
