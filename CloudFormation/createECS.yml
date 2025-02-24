@@ -21,7 +21,7 @@ Parameters:
 
   Image:
     Type: String
-    Default: 767397683125.dkr.ecr.ap-northeast-1.amazonaws.com/reptalicious:latest
+    Default: ''
 
 Resources:
   # CloudWatch Logs 作成

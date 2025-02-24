@@ -9,7 +9,6 @@ on:
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
   AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-  DB_URL: ${{ secrets.DB_URL }}
   DB_USERNAME: ${{ secrets.DB_USERNAME }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   ECR_REPOSITORY: reptalicious
@@ -92,7 +91,7 @@ jobs:
         # Build a docker container and
         # push it to ECR so that it can
         # be deployed to ECS.
-        docker build --build-arg DB_URL=${DB_URL} \
+        docker build --build-arg DB_URL=${{ env.RDS_ENDPOINT }} \
                      --build-arg DB_USERNAME=${DB_USERNAME} \
                      --build-arg DB_PASSWORD=${DB_PASSWORD} \
                      --build-arg AWS_REGION=${AWS_REGION} \
