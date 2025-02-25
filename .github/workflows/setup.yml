@@ -1,10 +1,6 @@
 name: Create Infrastructure
 
-on:
-  push:
-    branches: [ "dev" ]
-    paths:
-      - "CloudFormation/**"
+on: [ workflow_dispatch ]
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -23,7 +19,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy-infra:
+  infrastructure-setup:
     name: Deploy
     runs-on: ubuntu-latest
     environment: production
