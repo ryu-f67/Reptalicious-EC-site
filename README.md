@@ -6,6 +6,7 @@ AWS環境にデプロイし、GitHub Actionsを活用してCI/CDを自動化し�
 ### AWS構成図
 ![AWS構成図](image/AWS構成図.png)
 
+---
 ## 環境変数の設定（GitHub Repository Secrets）
 
 以下の環境変数をGitHubのRepository Secretsに設定してください。
@@ -19,6 +20,7 @@ AWS環境にデプロイし、GitHub Actionsを活用してCI/CDを自動化し�
 | DB_PASSWORD       | RDSのパスワード          |
 | AWS_S3_BUCKET     | S3のバケット名           |
 
+---
 
 ## GitHub Actions のワークフロー実行
 
@@ -41,10 +43,9 @@ AWS環境にデプロイし、GitHub Actionsを活用してCI/CDを自動化し�
 
 ※ `**` には `01~09` のいずれかの数字が入ります。
 
-:::note warn
-アプリの動作を確認後、`application.properties` の   
-`spring.jpa.hibernate.ddl-auto=create` を `spring.jpa.hibernate.ddl-auto=update` に変更してください。
-:::
+> [!WARNING]  
+> アプリの動作を確認後、`application.properties` の   
+> `spring.jpa.hibernate.ddl-auto=create` を `spring.jpa.hibernate.ddl-auto=update` に変更してください。
 
 ---
 
