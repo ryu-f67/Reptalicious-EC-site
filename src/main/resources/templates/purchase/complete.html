@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('購入完了',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/purchase.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="Purchase-container">
+        <p>ご購入ありがとうございます。注文が正常に処理されました。</p>
+        <p>注文番号 : <span th:text="${order.orderNumber}"></span></p>
+        <p><a th:href="@{/}">トップページへ戻る</a></p>
+    </div>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

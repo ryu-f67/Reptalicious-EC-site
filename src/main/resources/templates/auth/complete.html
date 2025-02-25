@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('登録完了',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/completedRegister.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="complete-container">
+        <p>会員登録が完了しました。</p>
+        <p><a th:href="@{/auth/login}">ログインページ</a></p>
+    </div>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

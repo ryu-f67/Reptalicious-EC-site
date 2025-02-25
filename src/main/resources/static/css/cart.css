@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+.cart-container {
+    display: flex;
+    align-items: flex-start;
+}
+.cartItem-container {
+    margin-right: 20px;
+}
+.purchase-container{
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background: rgb(241, 241, 241);
+    border-radius: 5px;
+}
+
+.cartItemTxt {
+    position: relative;
+    left: 16px;
+    height: 90%;
+    width: 62%;
+}
+.cartItemTxt p.productTitle {
+    font-size: 1.1rem;
+    line-height: 1.56;
+    margin: 0;
+    font-weight: bold;
+    color: #313131;
+    margin-bottom: 10px;
+}
+li.cartItem-list {
+    width: 640px;
+    height: 210px;
+    padding: 0;
+}
+li.cartItem-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 2px;
+    background: #fff;
+    transition: 0.2s ease-in-out;
+    padding: 15px;
+    position: relative;
+    align-items: center;
+    text-decoration: none;
+    border-top: solid 1px #eee;
+    padding-right: 10px;
+    
+}
+li.cartItem-list:last-child {
+    border-bottom: solid 1px #EEE;
+}
+li.cartItem-list a img {
+    margin-right: 3%;
+    border: 1px solid black;
+}
+.cartItemTitle {
+    font-size: 1.8rem;
+}
+.cartItemPrice {
+    position: absolute;
+    top: 50px;
+    font-size: 1.6rem;
+}
+.cartItemQuantity {
+    position: absolute;
+    bottom: 45px;
+    font-size: 1.4rem;
+}
+.box-quantity{
+    align-items: center;
+    position: absolute;
+    left: 50px;
+    bottom: 55px;
+}
+.box-quantity::after {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    width: 10px;
+    height: 7px;
+    background-color: #535353;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    content: '';
+    pointer-events: none;
+}
+.box-quantity select {
+    appearance: none;
+    min-width: 60px;
+    height: 30px;
+    padding: 5px 20px 5px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 3px;
+    background-color: #fff;
+    color: rgb(0, 0, 0);
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+.cartItem-remove {
+    position: absolute;
+    bottom: 5px;
+}
+.p-text {
+    position: relative;
+    top: 20px;
+    left: 110px;
+    font-size: 1.6rem;
+}
+.p-mini {
+    position: relative;
+    left: 110px;
+    font-size: 1.0rem;
+}
+.red {
+    color: rgb(255, 0, 0);
+}
+.btn-purchase {
+    position: relative;
+    top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 250px;
+    margin:0 auto;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 3px rgb(0 0 0 / 25%), 0 2px 3px -2px rgb(0 0 0 / 15%);
+    background-color: #39d025;
+    color: rgb(0, 0, 0);
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+.button-3:hover {
+    background-color: #29c015;
+}

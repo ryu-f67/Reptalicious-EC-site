@@ -1,0 +1,119 @@
+name: Create Infrastructure
+
+on: [ workflow_dispatch ]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  ECR_REPOSITORY: reptalicious
+  ECS_SERVICE: reptalicious-service
+  ECS_CLUSTER: reptalicious-cluster
+  ECS_TASK_DEFINITION: reptalicious-task.json
+  CONTAINER_NAME: reptalicious-container
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+permissions:
+  contents: read
+
+jobs:
+  infrastructure-setup:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: Deploy CloudFormation Stack 1
+      run: |
+        aws cloudformation deploy \
+          --template-file CloudFormation/createVPC.yml \
+          --stack-name reptalicious-vpc-stack \
+          --capabilities CAPABILITY_NAMED_IAM
+        
+        aws cloudformation deploy \
+          --template-file CloudFormation/createSG.yml \
+          --stack-name reptalicious-sg-stack \
+          --capabilities CAPABILITY_NAMED_IAM
+        
+        aws cloudformation deploy \
+          --template-file CloudFormation/createResources.yml \
+          --stack-name reptalicious-resources-stack \
+          --parameter-overrides RDSUsername=${{ secrets.DB_USERNAME }} RDSpassword=${{ secrets.DB_PASSWORD }} S3bucketname=${{ secrets.AWS_S3_BUCKET }} \
+          --capabilities CAPABILITY_NAMED_IAM
+        
+        RDS_ENDPOINT=$(aws rds describe-db-instances \
+            --query "DBInstances[?DBInstanceIdentifier=='reptaliciousdb'].Endpoint.Address" \
+            --output text)
+        echo "RDS_URL=${RDS_ENDPOINT}" >> $GITHUB_ENV
+
+    - name: Save RDS Endpoint as an artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: rds-endpoint
+        path: rds_endpoint.txt
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '21'
+
+    - name: Build with Maven
+      run: mvn clean package -DskipTests
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v2
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build --build-arg DB_URL=${{ env.RDS_URL }} \
+                     --build-arg DB_USERNAME=${DB_USERNAME} \
+                     --build-arg DB_PASSWORD=${DB_PASSWORD} \
+                     --build-arg AWS_REGION=${AWS_REGION} \
+                     --build-arg AWS_S3_BUCKET=${AWS_S3_BUCKET} \
+                     --build-arg AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                     --build-arg AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                     -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >> $GITHUB_OUTPUT
+
+    - name: Deploy CloudFormation Stack 2
+      run: |
+        aws cloudformation deploy \
+          --template-file CloudFormation/createECS.yml \
+          --stack-name reptalicious-ecs-stack \
+          --parameter-overrides Image=${{ steps.build-image.outputs.image }} \
+          --capabilities CAPABILITY_NAMED_IAM
+
+    - name: Get ALB DNS Name
+      run: |
+        ALB_DNS=$(aws cloudformation describe-stacks \
+          --stack-name reptalicious-resources-stack \
+          --query "Stacks[0].Outputs[?OutputKey=='ALBDNSName'].OutputValue" \
+          --output text)
+        echo "ALB_DNS=${ALB_DNS}" >> $GITHUB_ENV
+
+    - name: access ALB
+      run: |
+        echo "Accessing ALB at http://${ALB_DNS}:80"
+        curl -I http://${ALB_DNS}:80

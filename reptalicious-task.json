@@ -1,0 +1,55 @@
+{
+    "containerDefinitions": [
+      {
+        "name": "reptalicious-container",
+        "image": "767397683125.dkr.ecr.ap-northeast-1.amazonaws.com/reptalicious:latest",
+        "cpu": 0,
+        "portMappings": [
+          {
+            "containerPort": 8080,
+            "hostPort": 8080,
+            "protocol": "tcp",
+            "name": "reptalicious-container-8080-tcp",
+            "appProtocol": "http"
+          }
+        ],
+        "essential": true,
+        "entryPoint": [],
+        "command": [],
+        "environment": [],
+        "environmentFiles": [],
+        "mountPoints": [],
+        "volumesFrom": [],
+        "secrets": [],
+        "dnsServers": [],
+        "dnsSearchDomains": [],
+        "extraHosts": [],
+        "dockerSecurityOptions": [],
+        "dockerLabels": {},
+        "ulimits": [],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/reptalicious-task",
+            "mode": "non-blocking",
+            "max-buffer-size": "25m",
+            "awslogs-region": "ap-northeast-1",
+            "awslogs-stream-prefix": "ecs"
+          },
+          "secretOptions": []
+        },
+        "systemControls": [],
+        "credentialSpecs": []
+      }
+    ],
+    "family": "ReptaliciousTaskDefinition",
+    "taskRoleArn": "arn:aws:iam::767397683125:role/reptalicious-S3FullAccess-role",
+    "executionRoleArn": "arn:aws:iam::767397683125:role/reptalicious-task",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "cpu": "2048",
+    "memory": "4096",
+  "tags": []
+}

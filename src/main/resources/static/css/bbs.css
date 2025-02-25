@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+.bbs-title {
+    position: relative;
+    display: flex;
+}
+
+.bbs-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+li.thread-list {
+    width: 840px;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    padding: 15px;
+    text-decoration: none;
+    border: solid 1px rgb(128, 128, 128);
+    background-color: rgb(238, 238, 238);
+}
+
+.thread-link{
+    position: absolute;
+    font-size: 1.8rem;
+    width:540px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.thread-user{
+    position: absolute;
+    left: 720px;
+    font-size: 1.2rem;
+    width: 150px;
+    margin-top: 7px;
+    margin-bottom: 0;
+}
+
+.thread-content{
+    position: relative;
+    font-size: 1.4rem;
+    height: 11rem;
+    width: 84rem;
+    padding-top: 0;
+    margin-top: 35px;
+    border-radius: 2px;
+    word-break: break-word;
+    white-space: pre-wrap;
+    border: solid 1px rgb(128, 128, 128);
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+}
+
+.btn-thread {
+    position: relative;
+    left: 805px;
+    top: 30px;
+}
+
+.btn-edit{
+    position: absolute;
+    left: 840px;
+}
+.btn-remove{
+    position: absolute;
+    left: 890px;
+}
+.btn-report{
+    position: absolute;
+    left: 940px;
+}

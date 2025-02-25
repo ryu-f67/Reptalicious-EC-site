@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+.user-detail{
+    position: relative;
+    left: 64px;
+}
+
+.user-detail p{
+    font-size: 1.8rem;
+}
+
+.btn-remove{
+    padding: 5px 20px;
+}

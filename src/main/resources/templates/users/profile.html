@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('プロフィール',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    <main>
+        <h1>プロフィール</h1>
+        <div class="user-detail">
+            <p>氏名: <span th:text="${user.name}"></span></p>
+            <p>メールアドレス: <span th:text="${user.email}"></span></p>
+            <p>ニックネーム: <span th:text="${user.nickname}"></span></p>
+            <p>電話番号: <span th:text="${user.phoneNumber}"></span></p>
+            <p>住所: <span th:text="${user.address}"></span></p>
+        </div>
+        <p><a th:href="@{/users/profile/edit}" class="link">プロフィール修正</a></p>
+        <p><a th:href="@{/users/profile/editPass}" class="link">パスワード変更</a></p>
+        <p><a th:href="@{/mypage}" class="link">マイページ</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

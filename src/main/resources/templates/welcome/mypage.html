@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('マイページ',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/managePage.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    <main>
+        <h1>マイページ</h1>
+        <p sec:authorize="hasRole('ROLE_ADMIN')" class="menu"><a th:href="@{/admin}" th:text="管理ページ"></a></p>
+        <p class="menu"><a th:href="@{/users/profile}" th:text="プロフィール"></a></p>
+        <p class="menu"><a th:href="@{/orders}" th:text="注文履歴"></a></p>
+        <p class="menu"><a th:href="@{/favorites}" th:text="お気に入り"></a></p>
+        <p class="menu"><a th:href="@{/cart}" th:text="カート"></a></p>
+        <p class="menu"><a th:href="@{/}" th:text="トップページ"></a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

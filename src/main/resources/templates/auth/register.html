@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('新規会員登録',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/userForm.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <h1>新規会員登録</h1>
+        <p id="register-worning" class="worning red"></p>
+        <p th:if="${mailError}" class="worning red">入力に不備があります</p>
+        <p th:if="${phoneError}" class="worning red">入力に不備があります</p>
+        <div class="Form-container">
+            <div class="Form">
+                <form id="userForm" th:action="@{/auth/register}" th:object="${user}" method="post">
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label">メールアドレス<span class="Form-Item-Label-Required">必須</span>
+                            <span th:errors="*{email}" class="error-message red"></span>
+                            <span id="email_error" class="error-message red"></span>
+                            <span th:if="${mailError}" th:text="${mailError}" class="error-message red" ></span>
+                        </p>
+                        <input class="Form-Item-Input" type="email" th:field="*{email}" placeholder="user@example.com" required />
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label">パスワード<span class="Form-Item-Label-Required">必須</span>
+                            <span th:errors="*{password}" class="error-message red"></span>
+                            <span id="password_error" class="error-message red"></span>
+                        </p>
+                        <input class="Form-Item-Input" type="password" th:field="*{password}" id="password" name="password" placeholder="password" required />
+                        <div class="toggle-password">
+                            <input type="checkbox" id="togglePassword">
+                            <label for="togglePassword">パスワードを表示</label>
+                        </div>
+                        <p class="attension red">※ パスワードは8∼32文字で設定してください</p>
+                        <p class="attension red">※ パスワードには大文字・小文字・数字をそれぞれ1つ以上含めてください</p>
+                    
+                        <p class="Form-Item-Label">パスワード(確認用)<span class="Form-Item-Label-Required">必須</span></p>
+                        <input class="Form-Item-Input" type="password" id="confirmPassword" name="confirmPassword" placeholder="password" required />
+                        <div class="toggle-password">
+                            <input type="checkbox" id="toggleConfirmPassword">
+                            <label for="toggleConfirmPassword">パスワードを表示</label>
+                        </div>
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label">氏名<span class="Form-Item-Label-Required">必須</span>
+                            <span th:errors="*{name}" class="error-message red"></span>
+                            <span id="name_error" class="error-message red"></span>
+                        </p>
+                        <input class="Form-Item-Input" type="text" th:field="*{name}" placeholder="山田 太郎" required />
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label">ニックネーム<span class="Form-Item-Label-Any">任意</span>
+                            <span id="nickname_error" class="error-message red"></span>
+                        </p>
+                        <input class="Form-Item-Input" type="text" th:field="*{nickname}" placeholder="タロー" />
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label">電話番号(ハイフンなし)<span class="Form-Item-Label-Required">必須</span>
+                            <span th:errors="*{phoneNumber}" class="error-message red"></span>
+                            <span th:if="${phoneError}" th:text="${phoneError}" class="error-message red" ></span>
+                            <span id="phoneNumber_error" class="error-message red"></span>
+                        </p>
+                        <input class="Form-Item-Input" type="text" th:field="*{phoneNumber}" placeholder="080XXXXYYYY" required />
+                    </div>
+                    <div class="Form-Item">
+                        <p class="Form-Item-Label">住所<span class="Form-Item-Label-Required">必須</span>
+                            <span th:errors="*{address}" class="error-message red"></span>
+                            <span id="address_error" class="error-message red"></span>
+                        </p>
+                        <input class="Form-Item-Input" type="text" th:field="*{address}" placeholder="東京都〇〇区〇〇 〇-〇-〇" required />
+                    </div>
+                    <div class="Button-Item">
+                        <button type="submit" class="btn-submit">登録</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="Spacer"></div>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script src="/js/userInfoCheck.js"></script>
+    <script src="/js/togglePassword.js"></script>
+</body>
+</html>

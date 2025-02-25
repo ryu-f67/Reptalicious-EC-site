@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}">在庫詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/stock.css}">
+</head>
+<body>
+    <h1>在庫詳細</h1>
+    <div class="stock-detail">
+        <p>商品ID : <span th:text="${product.id}"></span></p>
+        <p>商品名 : <span th:text="${product.name}"></span></p>
+        <p>単価 : <span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></span> 円</p>
+        <form th:action="@{/admin/stocks/{id}/edit(id=${product.id})}" th:object="${product}" method="post">
+            <div>
+                <label>在庫数 : </label>
+                <input class="stock-form" type="number" th:field="*{stock}" min="0" required />
+            </div>
+            <div class="btn-position">
+                <button type="submit" class="btn-submit">変更</button>
+            </div>
+        </form>
+    </div>
+    <p><a th:href="@{/admin/stocks}" class="link">在庫管理へ戻る</a></p>
+</body>
+</html>

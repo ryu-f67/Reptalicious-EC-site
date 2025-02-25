@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: create AWS ECS for Reptalicious ec site
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Name base
+        Parameters:
+          - Namebase
+      - Label:
+          default: Image
+        Parameters:
+          - Image
+
+Parameters:
+  Namebase:
+    Type: String
+    Default: reptalicious
+
+  Image:
+    Type: String
+    Default: ''
+
+Resources:
+  # CloudWatch Logs 作成
+  ECSLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /ecs/logs/ecs-reptalicious-log
+
+  # IAM Role 作成
+  TaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ecs-tasks.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+      RoleName: reptalicious-task
+
+  # ECS Cluster 作成
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      CapacityProviders:
+        - FARGATE
+      ClusterName: !Sub ${Namebase}-cluster
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-cluster
+
+  # ECS Fargate 作成
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSCluster
+      DesiredCount: 1
+      EnableExecuteCommand: true
+      LaunchType: FARGATE
+      LoadBalancers:
+        - ContainerName: reptalicious-container
+          ContainerPort: 8080
+          TargetGroupArn: !ImportValue ALBTargetGroup
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - !ImportValue ECSSecurityGroupId
+            - !ImportValue ALBSecurityGroupId
+          Subnets:
+            - !ImportValue PublicSubnetAId
+            - !ImportValue PublicSubnetCId
+      ServiceName: reptalicious-service
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-Fargate
+      TaskDefinition: !Ref FargateTaskDefinition
+
+  FargateTaskDefinition:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      ContainerDefinitions:
+        - Essential: true
+          Image: !Sub ${Image}
+          LogConfiguration:
+            LogDriver: awslogs
+            Options:
+              awslogs-group: /ecs/reptalicious-task
+              awslogs-region: !Ref AWS::Region
+              awslogs-stream-prefix: ecs
+              max-buffer-size: 25m
+              mode: non-blocking
+          Name: reptalicious-container
+          PortMappings:
+            - AppProtocol: http
+              ContainerPort: 8080
+              HostPort: 8080
+              Name: reptalicious-container-8080-tcp
+              Protocol: tcp
+      Cpu: 2048
+      ExecutionRoleArn: !Ref TaskExecutionRole
+      Family: ReptaliciousTaskDefinition
+      Memory: 4096
+      NetworkMode: awsvpc
+      RuntimePlatform:
+        cpuArchitecture: X86_64
+        operatingSystemFamily: LINUX
+      RequiresCompatibilities:
+        - FARGATE
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-FargateTask
+      TaskRoleArn: !ImportValue S3accessIAMRole

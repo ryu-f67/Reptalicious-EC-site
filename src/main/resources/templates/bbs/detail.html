@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('スレッド詳細',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/comment.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <h1 th:text="${thread.title}">スレッドタイトル</h1>
+        <div class="thread-detail">
+            <p>最終更新 : <span th:text="${#temporals.format(thread.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+            <p>投稿者 : <span th:text="${thread.user.nickname}"></span></p>
+            <p class="thread-content" th:text="${thread.description}"></p>
+        </div>
+        <form class="addComment" th:action="@{/bbs/{id}/comment(id=${thread.id})}" method="get">
+            <button type="submit" class="btn-danger">コメント追加</button>
+        </form>
+        
+        <div th:if="${comments.isEmpty()}">
+            <p class="noItem">コメントはありません。</p>
+        </div>
+    
+        <div th:unless="${comments.isEmpty()}">
+            <div class="comment-container">
+                <ul>
+                    <li class="comment-list" th:each="comment : ${comments}">
+                        <div th:if="${comment.display.name() == 'DISPLAY'}">
+                            <div class="comment-head">
+                                <p class="comment-user">投稿者 : <span th:text="${comment.user.nickname}"></span></p>
+                                <p class="comment-time">最終更新 : <span th:text="${#temporals.format(comment.updatedAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+                                <div th:if="${comment.user == user}">
+                                    <form class="btn-edit" th:action="@{/bbs/{threadId}/comment/{commentId}/edit(threadId=${thread.id}, commentId=${comment.id})}" method="get">
+                                        <button type="submit" class="btn-danger">編集</button>
+                                    </form>
+                                </div>
+                                <div th:if="${comment.user == user}">
+                                    <form class="btn-remove" th:action="@{/bbs/{threadId}/comment/{commentId}/remove(threadId=${thread.id}, commentId=${comment.id})}" method="post">
+                                        <button type="submit" onclick="return confirm('本当に削除しますか？');" class="btn-danger">削除</button>
+                                    </form> 
+                                </div>
+                                <form class="btn-report" th:action="@{/bbs/reportComment}" method="post">
+                                    <input type="hidden" name="threadId" th:value="${thread.id}">
+                                    <input type="hidden" name="commentId" th:value="${comment.id}">
+                                    <button onclick="return confirm('本当に通報しますか？');" class="btn-danger">通報</button>
+                                </form>
+                            </div>
+                            <p class="comment-content" th:text="${comment.description}">内容</p>
+                        </div>
+                        <div th:if="${comment.display.name() == 'HIDDEN'}">
+                            <p class="comment-hidden">一時的に非表示中です</p>
+                        </div>
+                        <div th:if="${comment.display.name() == 'DELETED'}">
+                            <p class="comment-hidden">コメントが削除されました</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <p><a th:href="@{/bbs}" class="link">スレッド一覧へ戻る</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>カテゴリ管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/category.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+</head>
+<body>
+    <h1 class="management-table">カテゴリ管理</h1>
+    <div class="category-add">
+        <form th:action="@{/admin/categories/add}" th:object="${newCategory}" method="post">
+            <label>追加カテゴリ:</label>
+            <input type="text" th:field="*{name}" required />
+            <button type="submit" class="btn-success">追加</button>
+        </form>
+    </div>
+    
+    <div th:if="${categories.isEmpty()}">
+        <p>カテゴリがありません。</p>
+    </div>
+    
+    <div th:unless="${categories.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th class="id">ID</th>
+                    <th class="category">カテゴリ</th>
+                    <th class="status">状態</th>
+                    <th class="operation">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.id}">1</td>
+                    <td th:text="${category.name}">カテゴリ</td>
+                    <td th:text="${category.logicalDeleteStatus}">状態</td>
+                    <td>
+                        <form th:action="@{/admin/categories/toggle}" method="post">
+                            <input type="hidden" th:name="id" th:value="${category.id}" />
+                            <button type="submit" class="btn-secondary" 
+                                    th:text="${category.logicalDeleteStatus.name() == 'DELETED'  ? '復元' : '削除'}">
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a th:href="@{/admin}" class="link">管理者ページへ戻る</a></p>
+</body>
+</html>

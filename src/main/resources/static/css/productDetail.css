@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+.image-container {
+    position: relative;
+    left: 64px;
+    width: 1024px;
+    height: 480px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+.operate-container{
+    position: relative;
+    left: 16px;
+}
+.description-container{
+    position: relative;
+    left: 64px;
+    width: 1024px;
+}
+.main-img{
+    width: 450px;
+    height: 450px;
+}
+.img-box{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btnWrapper {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+}
+.img-btn {
+    border: 2px solid black;
+    border-radius: 5px;
+    box-shadow: none;
+    transition: box-shadow 0.3s ease;
+    max-width: 150px; 
+    max-height: 150px; 
+    width: auto; 
+    height: auto;
+}
+.img-btn.show {
+    box-shadow: 0 0 5px 5px red;
+    border-radius: 5px;
+}
+
+#image-main {
+    position: relative;
+    top: 10px;
+    border: 3px solid black;
+    border-radius: 10px; 
+    transition: opacity 0.5s ease;
+    opacity: 1; 
+    max-width: 450px; 
+    max-height: 450px; 
+    width: auto; 
+    height: auto;
+}
+#image-main.hidden {
+    opacity: 0; 
+}
+
+.product-name{
+    position: relative;
+    top: 36px;
+    font-size: 2.6rem;
+    font-weight: bold;
+}
+.evaluation-ave {
+    width: 100px;
+    height: 20px;
+    position: relative;
+    flex-direction: row-reverse;
+    font-size: 20px;
+    line-height: 1;
+    top: 30px;
+}
+
+.stars-full,
+.stars-empty {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    overflow: hidden;
+    color: gray;
+}
+
+.stars-full {
+    color: #ffcc00;
+    z-index: 1;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+.stars-empty {
+    z-index: 0;
+    pointer-events: none;
+}
+
+.review-link {
+    position: relative;
+    left: 110px;
+    font-size: 1.0rem;
+}
+
+.price{
+    position: relative;
+    top: 50px;
+    font-size: 2.0rem;
+}
+
+.description{
+    font-size: 1.6rem;
+}
+
+button.btn-product{
+  display: block;
+  width: 250px;
+  padding: 0.8rem;
+  text-align: center;
+  border-radius: 4px;
+}
+.btn-success{
+    position: relative;
+    top: 70px;
+    background-color: rgb(0, 164, 0);
+    color: white;
+}
+.btn-success:hover{
+    background-color: rgb(0, 184, 0)
+}
+.btn-already{
+    position: relative;
+    top: 70px;
+    background-color: rgb(128, 128, 128);
+    color: white;
+}
+.btn-favorite{
+    position: relative;
+    top: 85px;
+    background-color: rgb(128, 128, 128);
+    color: white;
+}
+.product-link{
+    font-size: 1.4rem;
+}
+.red {
+    color: red;
+}

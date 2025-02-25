@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('エラー',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <main>
+        <p class="error" th:text="${error}"></p>
+        <p><a th:href="@{/}" class="link">トップページへ戻る</a></p>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

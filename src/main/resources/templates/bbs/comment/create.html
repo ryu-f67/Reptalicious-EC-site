@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('コメント投稿',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/commentForm.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="form-wrapper">
+        <p class="title">コメント作成</p>
+        <div class="thread-wrapper">
+            <div class="text">
+                <p class="thread-title" th:text="${thread.title}">スレッドタイトル</p>
+                <p class="thread-content" th:text="${thread.description}">内容</p>
+            </div>
+        </div>
+        
+        <form th:action="@{${#strings.isEmpty(comment.id) ? '/bbs/' + thread.id + '/comment' : '/bbs/' + comment.thread.id + '/comment/' + comment.id + '/edit'}}" th:object="${comment}" method="post">
+            <div class="form-content">
+                <p class="Form-Item-Label">内容</p>
+                <textarea class="Form-Content-Input" th:field="*{description}" required></textarea>
+            </div>
+            <div class="Button-Item">
+                <button type="submit" class="btn-submit">投稿</button>
+            </div>
+        </form>
+    </div>
+    
+    <div th:replace="common :: common_footer"></div>
+</body>
+</html>

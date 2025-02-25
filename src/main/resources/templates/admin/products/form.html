@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="商品追加"></title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/productForm.css}">
+</head>
+<body>
+    <h1 th:text="商品追加"></h1>
+    <div class="Form-container">
+        <form th:action="@{/admin/products/create}" th:object="${product}" method="post" enctype="multipart/form-data">
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">商品名<span class="Form-Item-Label-Required">必須</span></label>
+                    <p th:errors="*{name}" class="error-message red"></p>
+                </div>
+                <input class="Form-Item-Input" type="text" th:field="*{name}" required />
+            </div>
+            
+            <div class="Form-Item">
+                <label class="Form-Item-Label">カテゴリー<span class="Form-Item-Label-Any">任意</span></label>
+                <div class="select-container">
+                    <select class="Form-Item-Select" name="selectedCategoryIdList">
+                        <option value="0" selected>--カテゴリを選択--</option>
+                        <option th:each="category : ${categories}" 
+                            th:value="${category.id}" 
+                            th:text="${category.name}"></option>
+                    </select>
+                    <select class="Form-Item-Select" name="selectedCategoryIdList">
+                        <option value="0" selected>--カテゴリを選択--</option>
+                        <option th:each="category : ${categories}" 
+                            th:value="${category.id}" 
+                            th:text="${category.name}"></option>
+                    </select>
+                    <select class="Form-Item-Select" name="selectedCategoryIdList">
+                        <option value="0" selected>--カテゴリを選択--</option>
+                        <option th:each="category : ${categories}" 
+                            th:value="${category.id}" 
+                            th:text="${category.name}"></option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">商品説明<span class="Form-Item-Label-Required">必須</span></label>
+                    <p th:errors="*{description}" class="error-message red"></p>
+                </div>
+                <textarea class="Form-Item-Textarea" th:field="*{description}" required></textarea>
+            </div>
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">価格<span class="Form-Item-Label-Required">必須</span></label>
+                    <p th:errors="*{price}" class="error-message red"></p>
+                </div>
+                <input class="Form-Item-Input" type="number" th:field="*{price}" min="0" required />
+            </div>
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">在庫数<span class="Form-Item-Label-Required">必須</span></label>
+                    <p th:errors="*{stock}" class="error-message red"></p>
+                </div>
+                <input class="Form-Item-Input" type="number" value="0" th:field="*{stock}" min="0" required />
+            </div>
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">商品画像(main)<span class="Form-Item-Label-Any">任意</span></label>
+                    <p th:errors="*{imageUrl1}" class="error-message red"></p>
+                </div>
+                <input type="file" name="imageFile1" id="imageFile1">
+            </div>
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">商品画像(sub1)<span class="Form-Item-Label-Any">任意</span></label>
+                    <p th:errors="*{imageUrl2}" class="error-message red"></p>
+                </div>
+                <input type="file" name="imageFile2" id="imageFile2">
+            </div>
+            <div class="Form-Item">
+                <div class="label-box">
+                    <label class="Form-Item-Label">商品画像(sub2)<span class="Form-Item-Label-Any">任意</span></label>
+                    <p th:errors="*{imageUrl3}" class="error-message red"></p>
+                </div>
+                <input type="file" name="imageFile3" id="imageFile3">
+            </div>
+            <div class="Button-Item">
+                <button type="submit" class="btn-submit">登録</button>
+            </div>
+        </form>
+    </div>
+    <a th:href="@{/admin/products}" class="link">戻る</a>
+    <div class="Spacer"></div>
+</body>
+</html>

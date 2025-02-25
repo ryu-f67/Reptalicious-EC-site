@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>会員詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/user.css}">
+</head>
+<body>
+    <h1>会員詳細</h1>
+    <div class="user-detail">
+        <p>ID: <span th:text="${user.id}"></span></p>
+        <p>メールアドレス: <span th:text="${user.email}"></span></p>
+        <p>氏名: <span th:text="${user.name}"></span></p>
+        <p>ニックネーム: <span th:text="${user.nickname}"></span></p>
+        <p>電話番号: <span th:text="${user.phoneNumber}"></span></p>
+        <p>住所: <span th:text="${user.address}"></span></p>
+        <p>ロール: <span th:text="${user.role.displayName}"></span></p>
+        <div th:if="${user.logicalDeleteStatus.name() == 'ACTIVE'}">
+            <form th:action="@{/admin/users/{id}/delete(id=${user.id})}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('本当に削除しますか？');" class="btn-remove">削除</button>
+            </form>
+        </div>
+        <div th:if="${user.logicalDeleteStatus.name() == 'DELETED'}">
+            <form th:action="@{/admin/users/{id}/restore(id=${user.id})}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('復元しますか？');" class="btn-remove">復元</button>
+            </form>
+        </div>
+    </div>
+    <p><a th:href="@{/admin/users}" class="link">会員一覧へ戻る</a></p>
+</body>
+</html>

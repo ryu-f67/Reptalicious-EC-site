@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>掲示板管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+</head>
+<body>
+    <h1>掲示板一覧</h1>
+    
+    <div th:if="${threads.isEmpty()}">
+        <p>掲示板はありません。</p>
+    </div>
+    
+    <div th:unless="${threads.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>タイトル</th>
+                    <th>通報回数</th>
+                    <th>投稿者</th>
+                    <th>状態</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="thread : ${threads}">
+                    <td th:text="${thread.id}">1</td>
+                    <td th:text="${thread.title}">タイトル</td>
+                    <td th:text="${thread.report}">0</td>
+                    <td th:text="${thread.user.nickname}">投稿者</td>
+                    <td th:text="${thread.display}"></td>
+                    <td>
+                        <a th:href="@{/admin/bbs/threads/{threadId}(threadId=${thread.id})}">詳細</a>
+                        <a th:href="@{/admin/bbs/threads/{threadId}/comments/all(threadId=${thread.id})}">コメント一覧</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a th:href="@{/admin}" class="link">管理者ページへ戻る</a></p>
+</body>
+</html>

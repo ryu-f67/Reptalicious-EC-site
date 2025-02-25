@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('レビュー投稿',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/reviewForm.css}">
+</head>
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="form-wrapper">
+        <p class="title">レビュー投稿</p>
+        <div class="product-wrapper">
+            <div class="img-box">
+                <img th:src="${orderDetail.product.imageUrl1 != null ? orderDetail.product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像" />
+            </div>
+            <div class="text">
+                <p th:text="${orderDetail.product.name}"></p>
+                <p>購入日 : <span th:text="${#temporals.format(orderDetail.createdAt, 'yyyy/MM/dd HH:mm')}"></span></p>
+            </div>
+        </div>
+        
+        <form th:action="@{/reviews/{id}/new(id=${orderDetail.product.id})}" th:object="${review}" method="post">
+            <input type="hidden" name="detailId" th:value="${orderDetail.id}" />
+            <div class="form-eval">
+                <p class="Form-Item-Label">評価</p>
+                <div class="evaluation">
+                    <input id="star5" type="radio" th:field="*{rating}" value="5" required />
+                    <label for="star5">★</label>
+                    <input id="star4" type="radio" th:field="*{rating}" value="4" required />
+                    <label for="star4">★</label>
+                    <input id="star3" type="radio" th:field="*{rating}" value="3" required />
+                    <label for="star3">★</label>
+                    <input id="star2" type="radio" th:field="*{rating}" value="2" required />
+                    <label for="star2">★</label>
+                    <input id="star1" type="radio" th:field="*{rating}" value="1" required />
+                    <label for="star1">★</label>
+                </div>
+            </div>
+            <div class="form-content">
+                <p class="Form-Item-Label">レビュー内容</p>
+                <textarea class="Form-Content-Input" th:field="*{description}"></textarea>
+            </div>
+            <div class="Button-Item">
+                <button type="submit" class="btn-submit">登録</button>
+            </div>
+        </form>
+    </div>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

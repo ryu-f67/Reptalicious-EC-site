@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('トップページ',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/topPage.css}">
+</head>
+
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="news-banner">
+        <div class="news-banner__content">
+        <p>合計金額10,000円以上お買い上げで<span class="red">送料無料</span>！！</p>
+      </div>
+    </div>
+    
+    <main>
+        <p class="title">新発売の商品</p>
+        <div th:if="${newProducts.isEmpty()}">
+            <p class="red noItem shift-pos">商品が登録されていません。</p>
+        </div>
+        <div th:unless="${newProducts.isEmpty()}">
+            <div class="product-container">
+                <ul class="grid">
+                    <li class="product-list" th:each="product : ${newProducts}">
+                        <div class="img-container">
+                            <a th:href="@{/products/{id}(id=${product.id})}">
+                                <img class="productImg" th:src="${product.imageUrl1 != null ? product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像" width="200"/>
+                            </a>
+                        </div>
+                        <a class="productName" th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}"></a>
+                        <div th:if="${product.stock==0}">
+                            <p class="red noStock">在庫なし</p>
+                        </div>
+                        <div th:unless="${product.stock==0}">
+                            <p class="price"><span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></span> 円</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+                    
+        <p class="title">すべての商品</p>
+        <div th:if="${randomProducts.isEmpty()}">
+            <p class="red noItem shift-pos">商品が登録されていません。</p>
+        </div>
+        <div th:unless="${randomProducts.isEmpty()}">
+            <div class="product-container">
+                <ul class="grid">
+                    <li class="product-list" th:each="product : ${randomProducts}">
+                        <div class="img-container">
+                            <a th:href="@{/products/{id}(id=${product.id})}">
+                                <img class="productImg" th:src="${product.imageUrl1 != null ? product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像" width="200"/>
+                            </a>
+                        </div>
+                        <a class="productName" th:href="@{/products/{id}(id=${product.id})}" th:text="${product.name}"></a>
+                        <div th:if="${product.stock==0}">
+                            <p class="red noStock">在庫なし</p>
+                        </div>
+                        <div th:unless="${product.stock==0}">
+                            <p class="price"><span th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></span> 円</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

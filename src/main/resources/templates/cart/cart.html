@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common :: meta_header('カート',~{::link},~{::script})">
+    <link rel="stylesheet" th:href="@{/css/cart.css}">
+</head>
+
+<body>
+    <div th:replace="common :: common_header"></div>
+    
+    <div class="news-banner">
+        <div class="news-banner__content">
+        <p>合計金額10,000円以上お買い上げで<span class="red">送料無料</span>！！</p>
+      </div>
+    </div>
+    
+    <main>
+    <h1>カートの内容</h1>
+    
+    <div th:if="${cartItems.isEmpty()}">
+        <p class="red noItem">カートに商品はありません。</p>
+    </div>
+    
+    <div th:unless="${cartItems.isEmpty()}">
+        <div class="cart-container">
+            <div class="cartItem-container">
+                <ul>
+                    <li class="cartItem-list" th:each="cartItem : ${cartItems}">
+                        <a th:href="@{/products/{id}(id=${cartItem.product.id})}">
+                            <img th:src="${cartItem.product.imageUrl1 != null ? cartItem.product.imageUrl1 : '/images/noimage.jpg'}" alt="商品画像" width="200"/>
+                        </a>
+                        <div class="cartItemTxt">
+                            <a class="cartItemTitle" th:href="@{/products/{id}(id=${cartItem.product.id})}" th:text="${cartItem.product.name}"></a>
+                            <p class="cartItemPrice">金額 : <span th:text="${#numbers.formatInteger(cartItem.product.price, 0, 'COMMA')}"></span> 円</p>
+                            <p class="cartItemQuantity">数量 : </p>
+                            <form class="box-quantity" th:action="@{/cart/update/{id}(id=${cartItem.id})}" method="post">
+                                <input class="quantity-input" type="hidden" th:value="${cartItem.id}" />
+                                <select name="quantity" onchange="this.form.submit()">
+                                    <option th:each="i : ${#numbers.sequence(1, cartItem.product.stock)}"
+                                        th:value="${i}"
+                                        th:text="${i}"
+                                        th:selected="${i == cartItem.quantity}">
+                                    </option>
+                                </select>
+                            </form>
+                            <form th:action="@{/cart/remove/{id}(id=${cartItem.id})}" method="post">
+                                <input type="hidden" th:value="${cartItem.id}" />
+                                <button class="cartItem-remove" type="submit" name="cartItemId">カートから削除</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="purchase-container">
+                <p class="p-text">小計 : <span th:text="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}"></span> 円</p>
+                <p class="p-text">送料 : <span th:text="${#numbers.formatInteger(totalPrice>=10000 ? 0 : 990, 0, 'COMMA')}"></span> 円</p>
+                <p class="p-mini">(10,000円以上ご購入で<span class="red">送料無料</span>)</p>
+                <p class="p-text"><strong>合計金額 : </strong> <span th:text="${#numbers.formatInteger(totalPrice>=10000 ? totalPrice : totalPrice+990, 0, 'COMMA')}"></span> <strong> 円</strong></p>
+                <form th:action="@{/purchase/inCart}" method="post">
+                    <div th:each="cartItem : ${cartItems}">
+                        <input type="hidden" th:name="cartItemIdList" th:value="${cartItem.id}" />
+                    </div>
+                    <button type="submit" class="btn-purchase">購入する</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    </main>
+    
+    <div th:replace="common :: common_footer"></div>
+    
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>

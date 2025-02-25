@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>会員管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+</head>
+<body>
+    <h1 class="management-table">会員管理</h1>
+    <table>
+        <thead>
+            <tr>
+                <th class="id">ID</th>
+                <th class="email">メールアドレス</th>
+                <th class="user">名前</th>
+                <th class="phone">電話番号</th>
+                <th class="role">ロール</th>
+                <th>状態</th>
+                <th class="operation">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}">1</td>
+                <td th:text="${user.email}">user@example.com</td>
+                <td th:text="${user.name}">山田太郎</td>
+                <td th:text="${user.phoneNumber}">08012345678</td>
+                <td th:text="${user.role}">一般</td>
+                <td th:text="${user.logicalDeleteStatus}"></td>
+                <td>
+                    <a th:href="@{/admin/users/{id}(id=${user.id})}" th:text="詳細" >詳細</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p><a th:href="@{/admin}" class="link">管理者ページへ戻る</a></p>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'注文詳細 - ' + ${order.id}">注文詳細</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+    <link rel="stylesheet" th:href="@{/css/order.css}">
+</head>
+<body>
+    <h1>注文詳細 - 注文ID: <span th:text="${order.id}">1</span></h1>
+    <div class="order-detail">
+        <p>ユーザー : <span th:text="${order.user.name}">ユーザー名</span></p>
+        <p>注文日 : <span th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}">2023-10-01 12:34</span></p>
+        <p>注文番号 : <span th:text="${order.orderNumber}"></span></p>
+        <p>送料 : <span th:text="${#numbers.formatInteger(order.shippingFee, 0, 'COMMA')}"></span> 円</p>
+        <p>合計金額 : <span th:text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA')}">1000</span> 円</p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>数量</th>
+                <th>価格</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="detail : ${order.orderDetails}">
+                <td th:text="${detail.product.name}"></td>
+                <td th:text="${#numbers.formatInteger(detail.price, 0, 'COMMA')}"></td>
+                <td th:text="${detail.quantity}"></td>
+                <td th:text="${#numbers.formatInteger(detail.price*detail.quantity, 0, 'COMMA')}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a th:href="@{/admin/orders}" class="link">注文管理画面へ戻る</a></p>
+</body>
+</html>

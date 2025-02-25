@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+</head>
+<body>
+    <h1 class="management-table">商品管理</h1>
+    <p><a th:href="@{/admin/products/create}" class="link">新規商品追加</a></p>
+    <table>
+        <thead>
+            <tr>
+                <th class="id">ID</th>
+                <th class="product-name">名前</th>
+                <th class="price">価格</th>
+                <th class="operation">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></td>
+                <td>
+                    <a th:href="@{/admin/products/{id}(id=${product.id})}">詳細</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p><a th:href="@{/admin}" class="link">管理者ページへ戻る</a></p>
+</body>
+</html>

@@ -1,0 +1,248 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: create AWS resources for Reptalicious ec site
+
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Name base
+        Parameters:
+          - Namebase
+      - Label:
+          default: RDS Config
+        Parameters:
+          - RDSUsername
+          - RDSpassword
+      - Label:
+          default: ALB Config
+        Parameters:
+          - ALBname
+      - Label:
+          default: S3 Config
+        Parameters:
+          - S3bucketname
+    ParameterLabels:
+      RDSUsername:
+        default: RDS username
+      RDSpassword:
+        default: RDS password
+      ALBname:
+        default: ALB name
+      S3bucketname:
+        default: S3 bucket name
+
+Parameters:
+  Namebase:
+    Type: String
+    Default: reptalicious
+
+  RDSUsername:
+    Type: String
+    Default: root
+
+  RDSpassword:
+    Type: String
+    Default: ''
+    NoEcho: true
+
+  ALBname:
+    Type: String
+    Default: reptalicious-alb
+
+  S3bucketname:
+    Type: String
+    Default: reptalicious-bucket
+
+Resources:
+  # RDS作成
+  rdsDBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: This DBSubnet Group is for RDS
+      SubnetIds:
+        - !ImportValue PrivateSubnetAId
+        - !ImportValue PrivateSubnetCId
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-RDS-SubnetGroup
+
+  rdsDBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      AllowMajorVersionUpgrade: false
+      AutoMinorVersionUpgrade: false
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      BackupRetentionPeriod: 0
+      DBInstanceClass: db.t3.micro
+      DBInstanceIdentifier: reptaliciousdb
+      DBName: reptalicious
+      DBSubnetGroupName: !Ref rdsDBSubnetGroup
+      Engine: mysql
+      EngineVersion: 8.0.40
+      MasterUsername: !Ref RDSUsername
+      MasterUserPassword: !Ref RDSpassword
+      MultiAZ: false
+      Port: 3306
+      PubliclyAccessible: false
+      StorageType: gp2
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-RDS
+      VPCSecurityGroups:
+        - !ImportValue RDSSecurityGroupId
+
+    # ALB作成
+  ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      IpAddressType: ipv4
+      Name: !Ref ALBname
+      Scheme: internet-facing
+      SecurityGroups:
+        - !ImportValue ECSSecurityGroupId
+        - !ImportValue ALBSecurityGroupId
+      Subnets:
+        - !ImportValue PublicSubnetAId
+        - !ImportValue PublicSubnetCId
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-alb
+      Type: application
+
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckPort: traffic-port
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      IpAddressType: ipv4
+      Matcher:
+        HttpCode: 200
+      Name: !Sub ${Namebase}-alb-targetgroup
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-alb-targetgroup
+      TargetType: ip
+      UnhealthyThresholdCount: 2
+      VpcId: !ImportValue VPCId
+
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref ALBTargetGroup
+          Type: forward
+      LoadBalancerArn: !Ref ALB
+      Port: 80
+      Protocol: HTTP
+
+  # S3作成
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref S3bucketname
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-bucket
+
+  # S3 バケットポリシー
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Action:
+              - s3:GetObject
+            Sid: BucketPolicy
+            Effect: Allow
+            Resource:
+              - !Sub 'arn:aws:s3:::${S3Bucket}/*'
+            Principal: '*'
+    DependsOn: S3Bucket
+
+  # IAM Role 作成
+  S3accessIAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: S3AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:*
+                Resource:
+                  - !Sub 'arn:aws:s3:::${S3Bucket}'
+                  - !Sub 'arn:aws:s3:::${S3Bucket}/*'
+      RoleName: !Sub ${Namebase}-S3FullAccess-role
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}-S3FullAccess-role
+
+    # ECR Repository 作成
+  ECRRepository:
+    Type: AWS::ECR::Repository
+    Properties:
+      ImageTagMutability: MUTABLE
+      LifecyclePolicy:
+        LifecyclePolicyText: |
+          {
+            "rules": [
+              {
+                "rulePriority": 1,
+                "description": "Keep only the last 3 images",
+                "selection": {
+                  "tagStatus": "any",
+                  "countType": "imageCountMoreThan",
+                  "countNumber": 3
+                },
+                "action": {
+                  "type": "expire"
+                }
+              }
+            ]
+          }
+      RepositoryName: !Sub ${Namebase}
+      Tags:
+        - Key: Name
+          Value: !Sub ${Namebase}
+
+Outputs:
+  ALBTargetGroup:
+    Value: !Ref ALBTargetGroup
+    Export:
+      Name: ALBTargetGroup
+
+  S3accessIAMRole:
+    Value: !Ref S3accessIAMRole
+    Export:
+      Name: S3accessIAMRole
+
+  ALBDNSName:
+    Value: !GetAtt ALB.DNSName
+    Export:
+      Name: ALBDNSName

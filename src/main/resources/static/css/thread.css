@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+.thread-detail{
+    position: relative;
+    left: 64px;
+}
+
+.thread-detail p{
+    font-size: 1.8rem;
+}
+
+.btn-danger{
+    position: relative;
+    left: 64px;
+    margin-right: 20px;
+    padding: 5px 20px;
+}

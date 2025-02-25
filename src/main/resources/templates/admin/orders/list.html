@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注文管理画面</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+</head>
+<body>
+    <h1 class="management-table">注文管理画面</h1>
+    <div th:if="${orders.isEmpty()}">
+        <p class="noItem">まだ注文がありません。</p>
+    </div>
+    <div th:unless="${orders.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th class="id">ID</th>
+                    <th class="user">ユーザー</th>
+                    <th class="sum-price">合計金額</th>
+                    <th class="date-order">注文日</th>
+                    <th class="num-order">注文番号</th>
+                    <th class="operation">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="order : ${orders}">
+                    <td th:text="${order.id}">1</td>
+                    <td th:text="${order.user.name}">ユーザー名</td>
+                    <td th:text="${order.totalPrice}">1000</td>
+                    <td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}">2023-10-01 12:34</td>
+                    <td th:text="${order.orderNumber}"></td>
+                    <td>
+                        <a th:href="@{/admin/orders/{id}(id=${order.id})}" class="btn btn-primary">詳細</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <p><a th:href="@{/admin}" class="link">管理者ページへ戻る</a></p>
+</body>
+</html>
