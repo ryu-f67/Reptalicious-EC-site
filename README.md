@@ -1,7 +1,8 @@
 # Reptalicious EC Site
 
 このWebアプリは、SpringBootで開発したECサイトです。  
-AWS環境にデプロイし、GitHub Actionsを活用してCI/CDを自動化しています。
+AWS環境にデプロイし、GitHub Actionsを活用してCI/CDを自動化しています。  
+※ local環境で動作させたい場合は、localブランチを参照してください。
 
 ### AWS構成図
 ![AWS構成図](image/AWS構成図.png)
