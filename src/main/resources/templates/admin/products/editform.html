@@ -57,21 +57,21 @@
                     <label class="Form-Item-Label">商品画像(main)<span class="Form-Item-Label-Any">任意</span></label>
                     <p th:errors="*{imageUrl1}" class="error-message red"></p>
                 </div>
-                <input type="file" name="imageFile1" id="imageFile1">
+                <input class="Form-Item-Input" type="text" th:field="*{imageUrl1}" />
             </div>
             <div class="Form-Item">
                 <div class="label-box">
                     <label class="Form-Item-Label">商品画像(sub1)<span class="Form-Item-Label-Any">任意</span></label>
                     <p th:errors="*{imageUrl2}" class="error-message red"></p>
                 </div>
-                <input type="file" name="imageFile1" id="imageFile1">
+                <input class="Form-Item-Input" type="text" th:field="*{imageUrl2}" />
             </div>
             <div class="Form-Item">
                 <div class="label-box">
                     <label class="Form-Item-Label">商品画像(sub2)<span class="Form-Item-Label-Any">任意</span></label>
                     <p th:errors="*{imageUrl3}" class="error-message red"></p>
                 </div>
-                <input type="file" name="imageFile1" id="imageFile1">
+                <input class="Form-Item-Input" type="text" th:field="*{imageUrl3}" />
             </div>
             <div class="Button-Item">
                 <button type="submit" class="btn-submit">更新</button>

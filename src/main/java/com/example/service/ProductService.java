@@ -22,9 +22,6 @@ public class ProductService {
     private ProductRepository productRepository;
     
     @Autowired
-    private S3Service s3Service;
-    
-    @Autowired
     private ProductCategoryRepository productCategoryRepository;
 
     // すべての商品を取得
@@ -91,48 +88,44 @@ public class ProductService {
         productCategoryRepository.deleteByProduct(product);
         
     }
-    
+
     // 商品を登録
     @Transactional
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
-    }
-    
-    // 商品画像を更新
-    @Transactional
-    public Product updateProductImages(Product product, MultipartFile imageFile1, MultipartFile imageFile2, MultipartFile imageFile3) {
-        try {
-            if (imageFile1 != null && !imageFile1.isEmpty()) {
-                String imageUrl1 = s3Service.uploadFile(product.getId(), imageFile1, "imageFile1");
-                product.setImageUrl1(imageUrl1);
-            } else {
-                product.setImageUrl1(null);
-            }
-            if (imageFile2 != null && !imageFile2.isEmpty()) {
-                String imageUrl2 = s3Service.uploadFile(product.getId(), imageFile2, "imageFile2");
-                product.setImageUrl2(imageUrl2);
-            } else {
-                product.setImageUrl2(null);
-            }
-            if (imageFile3 != null && !imageFile3.isEmpty()) {
-                String imageUrl3 = s3Service.uploadFile(product.getId(), imageFile3, "imageFile3");
-                product.setImageUrl3(imageUrl3);
-            } else {
-                product.setImageUrl3(null);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("画像のアップロードに失敗しました", e);
+    public Product saveProduct(Product product){
+        if (product.getImageUrl1() != null && product.getImageUrl1().isEmpty()) {
+            product.setImageUrl1(null);
+        }
+        if (product.getImageUrl2() != null && product.getImageUrl2().isEmpty()) {
+            product.setImageUrl2(null);
+        }
+        if (product.getImageUrl3() != null && product.getImageUrl3().isEmpty()) {
+            product.setImageUrl3(null);
         }
         return productRepository.save(product);
     }
-    
-    
+
     // 商品を更新
     @Transactional
     public Product updateProduct(Product product, Product updatedProduct){
         product.setName(updatedProduct.getName());
         product.setDescription(updatedProduct.getDescription());
         product.setPrice(updatedProduct.getPrice());
+        if (updatedProduct.getImageUrl1() != null && updatedProduct.getImageUrl1().isEmpty()) {
+            product.setImageUrl1(null);
+        } else {
+            product.setImageUrl1(updatedProduct.getImageUrl1());
+        }
+        if (updatedProduct.getImageUrl2() != null && updatedProduct.getImageUrl2().isEmpty()) {
+            product.setImageUrl2(null);
+        } else {
+            product.setImageUrl2(updatedProduct.getImageUrl2());
+        }
+        if (updatedProduct.getImageUrl3() != null && updatedProduct.getImageUrl3().isEmpty()) {
+            product.setImageUrl3(null);
+        } else {
+            product.setImageUrl3(updatedProduct.getImageUrl3());
+        }
+
         return productRepository.save(product);
     }
     

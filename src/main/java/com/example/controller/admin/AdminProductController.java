@@ -52,28 +52,17 @@ public class AdminProductController {
     // 商品登録処理
     @PostMapping("/create")
     public String createProduct(@RequestParam List<Long> selectedCategoryIdList,
-                                @Valid @ModelAttribute Product product,
-                                @RequestParam(value = "imageFile1", required = false) MultipartFile imageFile1,
-                                @RequestParam(value = "imageFile2", required = false) MultipartFile imageFile2,
-                                @RequestParam(value = "imageFile3", required = false) MultipartFile imageFile3,
-                                BindingResult bindingResult) {
+        @Valid @ModelAttribute Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/products/form";
         }
-        try {
-            productService.saveProduct(product);
-            productService.updateProductImages(product, imageFile1, imageFile2, imageFile3);
-            for (Long selectedCategoryId : selectedCategoryIdList) {
-                if (selectedCategoryId != 0) {
-                    Category selectedCategory = categoryService.getCategoryById(selectedCategoryId);
-                    productService.saveProductCategory(product, selectedCategory);
-                }
+        productService.saveProduct(product);
+        for (Long selectedCategoryId : selectedCategoryIdList) {
+            if (selectedCategoryId != 0) {
+                Category selectedCategory = categoryService.getCategoryById(selectedCategoryId);
+                productService.saveProductCategory(product, selectedCategory);
             }
-        } catch (Exception e) {
-            bindingResult.rejectValue("imageUrl1", "uploadError", "画像のアップロードに失敗しました");
-            return "admin/products/form";
         }
-        
         return "redirect:/admin/products";
     }
 
@@ -99,14 +88,10 @@ public class AdminProductController {
 
     // 商品更新処理
     @PostMapping("/{id}/edit")
-    public String updateProduct(@PathVariable Long id, 
-                                @RequestParam List<Long> updateSelectedCategoryIdList,
-                                @Valid @ModelAttribute Product updatedProduct, 
-                                @RequestParam(value = "imageFile1", required = false) MultipartFile imageFile1,
-                                @RequestParam(value = "imageFile2", required = false) MultipartFile imageFile2,
-                                @RequestParam(value = "imageFile3", required = false) MultipartFile imageFile3,
-                                BindingResult bindingResult,
-                                Model model){
+    public String updateProduct(@PathVariable Long id,
+        @RequestParam List<Long> updateSelectedCategoryIdList,
+        @Valid @ModelAttribute Product updatedProduct, BindingResult bindingResult,
+        Model model){
         if (bindingResult.hasErrors()) {
             return "admin/products/editform";
         }
@@ -117,19 +102,18 @@ public class AdminProductController {
             model.addAttribute("error", e.getMessage());
             return "operationError";
         }
-        
+
         productService.updateProduct(product, updatedProduct);
-        productService.updateProductImages(product, imageFile1, imageFile2, imageFile3);
-        
+
         productService.removeProductCategoryByProduct(product);
-        
+
         for (Long updateSelectedCategoryId : updateSelectedCategoryIdList) {
             if (updateSelectedCategoryId != 0) {
                 Category updateSelectedCategory = categoryService.getCategoryById(updateSelectedCategoryId);
                 productService.saveProductCategory(product, updateSelectedCategory);
             }
         }
-        
+
         return "redirect:/admin/products/{id}";
     }
     
